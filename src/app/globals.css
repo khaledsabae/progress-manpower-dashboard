@@ -1,0 +1,134 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 96.1%; /* Light grey (#F4F6F6) */
+    --foreground: 240 5.3% 26.1%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 5.3% 26.1%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 5.3% 26.1%;
+    --primary: 211 57% 45%; /* Calming blue (#2980B9) */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 240 5.3% 26.1%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 240 5.3% 45.1%;
+    --accent: 157 54% 50%; /* Teal (#1ABC9C) */
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84.2% 60.2%; /* Standard Red */
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 211 57% 45%; /* Calming blue (#2980B9) */
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --success: 142.1 76.2% 36.3%; /* Example Emerald 600 */
+    --success-foreground: 142.1 76.2% 96.3%; /* Example Light Emerald */
+    --warning: 43.0 96.0% 50.0%;  /* Example Amber 500 */
+    --warning-foreground: 43.0 96.0% 10.0%; /* Example Dark Amber */
+    --radius: 0.5rem;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 211 57% 45%; /* Calming blue (#2980B9) */
+    --primary-foreground: 0 0% 9%; /* Dark text on primary button */
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+    --accent: 157 54% 50%; /* Teal (#1ABC9C) */
+    --accent-foreground: 0 0% 98%; /* Light text on accent */
+    --destructive: 0 72% 51%; /* Brighter Red for Dark */
+    --destructive-foreground: 0 0% 98%; /* Light text */
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 0 0% 83.1%; /* Lighter Ring */
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+    --success: 140 60% 50%; /* Brighter Emerald */
+    --success-foreground: 140 60% 95%; /* Very Light Emerald */
+    --warning: 40 90% 60%; /* Brighter Amber */
+    --warning-foreground: 40 90% 15%; /* Darker Amber for contrast */
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    /* Font smoothing */
+    font-feature-settings: "rlig" 1, "calt" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* === CSS Hack === */
+.manpower-chart-container svg.recharts-surface g.recharts-layer.recharts-yAxis[orientation="right"] {
+  transform: translate(670px, 5px) !important;
+}
+.manpower-chart-container svg.recharts-surface g.recharts-layer.recharts-yAxis[orientation="right"] .recharts-cartesian-axis-tick text {
+  text-anchor: start !important;
+}
+/* === نهاية الـ CSS Hack === */
+
+/* === Utility Classes for Table Highlighting === */
+@layer utilities {
+  .table-row-delayed {
+    @apply bg-red-100 hover:bg-red-200; /* Light mode */
+  }
+  .dark .table-row-delayed {
+     /* --- تم التعديل هنا --- */
+    background-color: hsla(var(--destructive) / 0.2); /* Apply with 20% opacity */
+  }
+  .dark .table-row-delayed:hover {
+     /* --- تم التعديل هنا --- */
+    background-color: hsla(var(--destructive) / 0.3); /* Apply hover with 30% opacity */
+  }
+
+  .table-row-upcoming {
+    @apply bg-amber-100 hover:bg-amber-200; /* Light mode */
+  }
+  .dark .table-row-upcoming {
+     /* --- تم التعديل هنا --- */
+    background-color: hsla(var(--warning) / 0.2); /* Apply with 20% opacity */
+  }
+  .dark .table-row-upcoming:hover {
+     /* --- تم التعديل هنا --- */
+    background-color: hsla(var(--warning) / 0.3); /* Apply hover with 30% opacity */
+  }
+}
+/* === نهاية Utility Classes === */
