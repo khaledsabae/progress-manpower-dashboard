@@ -1,0 +1,50 @@
+{
+  "navigation": {
+    "overview": "Overview",
+    "details": "Engineering Details",
+    "risks": "Risk Register"
+  },
+  "header": {
+    "title": "Smart Project Dashboard",
+    "language": "Language"
+  },
+  "overview": {
+    "title": "Project Overview",
+    "overallProgress": "Overall Progress",
+    "manpowerStatus": "Manpower Status",
+    "aiInsights": "AI Insights",
+    "projectTimeline": "Project Timeline",
+    "completionDate": "Expected Completion Date",
+    "summary": "Project Summary",
+    "loading": "Loading...",
+    "loadingInsights": "Analyzing project data...",
+    "error": "Error loading data",
+    "errorLoadingInsights": "Error loading insights",
+    "serviceUnavailable": "Service temporarily unavailable",
+    "errorOccurred": "An error occurred",
+    "errorId": "Error ID",
+    "retry": "Try again"
+  },
+  "details": {
+    "title": "Engineering Details",
+    "mechanicalPlan": "Mechanical Plan",
+    "progress": "Progress",
+    "status": "Status",
+    "assignedTo": "Assigned To"
+  },
+  "risks": {
+    "title": "Risk Register",
+    "riskId": "Risk ID",
+    "description": "Description",
+    "probability": "Probability",
+    "impact": "Impact",
+    "mitigation": "Mitigation",
+    "owner": "Owner"
+  },
+  "common": {
+    "refresh": "Refresh",
+    "export": "Export",
+    "print": "Print",
+    "close": "Close"
+  }
+}

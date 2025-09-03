@@ -1,0 +1,62 @@
+{
+  "navigation": {
+    "overview": "نظرة عامة",
+    "details": "التفاصيل الهندسية",
+    "risks": "سجل المخاطر"
+  },
+  "header": {
+    "title": "لوحة معلومات المشروع الذكية",
+    "language": "اللغة"
+  },
+  "overview": {
+    "title": "نظرة عامة على المشروع",
+    "overallProgress": "التقدم الإجمالي",
+    "manpowerStatus": "حالة القوى العاملة",
+    "aiInsights": "الرؤى الذكية",
+    "projectTimeline": "الجدول الزمني للمشروع",
+    "completionDate": "تاريخ الإنجاز المتوقع",
+    "summary": "ملخص المشروع",
+    "loading": "جاري التحميل...",
+    "loadingInsights": "جاري تحليل بيانات المشروع...",
+    "error": "حدث خطأ في تحميل البيانات",
+    "errorLoadingInsights": "حدث خطأ في تحميل الرؤى",
+    "serviceUnavailable": "الخدمة غير متوفرة حالياً",
+    "errorOccurred": "حدث خطأ",
+    "errorId": "رقم الخطأ",
+    "retry": "إعادة المحاولة",
+    "outOfPlanned": "خارج الخطة",
+    "utilizationRate": "معدل الاستخدام",
+    "status": "الحالة",
+    "needsImprovement": "يحتاج إلى تحسين",
+    "usage": "الاستخدام",
+    "excellent": "ممتاز",
+    "good": "جيد",
+    "updating": "جاري التحديث",
+    "notSpecified": "غير محدد",
+    "predictedCompletion": "الانتهاء المتوقع",
+    "noSummaryAvailable": "لا توجد ملخصات متاحة",
+    "noRecommendationsAvailable": "لا توجد توصيات متاحة"
+  },
+  "details": {
+    "title": "التفاصيل الهندسية",
+    "mechanicalPlan": "الخطة الميكانيكية",
+    "progress": "التقدم",
+    "status": "الحالة",
+    "assignedTo": "مُكلف إلى"
+  },
+  "risks": {
+    "title": "سجل المخاطر",
+    "riskId": "معرف المخاطرة",
+    "description": "الوصف",
+    "probability": "الاحتمالية",
+    "impact": "التأثير",
+    "mitigation": "التخفيف",
+    "owner": "المسؤول"
+  },
+  "common": {
+    "refresh": "تحديث",
+    "export": "تصدير",
+    "print": "طباعة",
+    "close": "إغلاق"
+  }
+}

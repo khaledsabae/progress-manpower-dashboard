@@ -1,0 +1,197 @@
+Area/Building,Location (Room/Level),Mechanical Activity (System),Original Duration (Days),Current Progress %,Key Predecessor Activity,Predecessor Finish Date,Calculated Mech. Start Date,Calculated Mech. Finish Date,Remarks / Justification
+PE-263 380 KV GIS Building,Ground Floor,Firefighting,15,60%,GIS Hall cable Trays,2025-06-08,2025-06-09,2025-06-24,on going 4th system LCC FM-200 piping network
+PE-263 380 KV GIS Building,Ground floor,Fire Alarm ( conduiting+cabling ),15,85%,GIS Hall cable Trays,2025-06-08,2025-06-09,2025-06-17,on going. conduit for ceiling devices almost completed.
+PE-263 Control Building,Ground Floor,Security System ( RGS Conduit Installation ),,98%,,,2025-07-13,2025-08-13,"Ongoing. After completion, cable pulling activities will be started "
+PE-263 Control Building,Ground Floor,Security System ( Cable pulling ),,98%,Security System ( RGS Conduit Installation ),2025-08-13,2025-08-14,2025-08-24,Materials are available 
+PE-263 Control Building,Ground Floor,Security System ( Camera Installation),,0 %,,,,,Materials are available 
+PE-263 Control Building,Ground Floor,Security System ( Card Readers installation),,22%,,,,,Waterproof boxes installed- Materials are not available
+PE-263 Control Building,Ground Floor,Security System ( Access Control Instsllstion),,0 %,,,,,Materials are not available
+PE-263 Control Building,Ground Floor,Security System ( Emergency Break Glass),,22%,,,,,Waterproof boxes installed- Materials are available 
+PE-263 Control Building,Ground Floor,Security System ( Doors megnatic locks),,22%,,,,,Waterproof boxes installed- Materials are available 
+PE-263 Control Building,Ground Floor,Security System ( Exit Push Buttons),,22%,,,,,Waterproof boxes installed- Materials are available 
+PE-263 Control Building,Ground Floor,Security System ( Switch installation),,0 %,,,,,Materials are available 
+PE-263 Control Building,Ground Floor,Security System ( Switches installation),,0 %,,,,,Materials are available 
+PE-263 Control Building,Ground Floor,Security System ( Intercom & IP telephone),,0 %,,,,,Materials are available 
+PE-263 110 kV GIS Building,Ground Floor,Security System ( RGS Conduit Installation ),,100%,,,,,
+PE-263 110 kV GIS Building,Basement Floor,Security System ( RGS Conduit Installation ),,0 %,,,,,
+PE-263 110 kV GIS Building,Ground Floor,Security System ( Cable pulling ),,80 %,,,,,
+PE-263 110 kV GIS Building,Basement,Security System ( Cable pulling ),,,,,,,
+PE-263 110 kV GIS Building,"Ground Floor, Basement",Security System ( Camera Installation),,,,,,,
+PE-263 110 kV GIS Building,"Ground Floor, Basement",Security System ( Card Readers installation),,22%,,,,,Waterproof boxes installed- Materials are available 
+PE-263 110 kV GIS Building,Ground Floor,Security System ( Access Control Instsllstion),,,,,,,
+PE-263 110 kV GIS Building,"Ground Floor, Basement",Security System ( Emergency Break Glass),,22%,,,,,Waterproof boxes installed- Materials are available 
+PE-263 110 kV GIS Building,"Ground Floor, Basement",Security System ( Doors megnatic locks),,22%,,,,,Waterproof boxes installed- Materials are available 
+PE-263 110 kV GIS Building,"Ground Floor, Basement",Security System ( Exit Push Buttons),,22%,,,,,Waterproof boxes installed- Materials are available 
+PE-263 110 kV GIS Building,Ground Floor,Security System ( CCTV Rack Cabinet installation),,,,,,,
+PE-263 110 kV GIS Building,Ground Floor,Security System ( Switches installation),,,,,,,
+PE-263 380 KV GIS Building,"Ground Floor, Basement",Security System ( Conduit Installation),,80 %,,,,,
+PE-263 380 KV GIS Building,"Ground Floor, Basement",Security System ( Cable pulling),,,,,,,
+PE-263 Control Building,DDC PANEL,DDC PANEL TERMATIONS,,30%,,,,,
+PE-263 Control Building,External Ducts for Pacu 4A&4B,HVAC System,,90 %,,,,,
+PE-263 Control Building,External Ducts for Pacu 5A&5B,HVAC System,,10%,,,,,Materials are available 
+PE-263 380 KV GIS Building,Ground floor ( LCC PANEL ),Fire alarm ( device installation ),0,60%,,,,,detectors bases inside LCC completed .remaining will be done with cylinder delivery.
+PE-263 380 KV GIS Building,Basement,Fire Alarm ( conduiting+cabling ),15,90 %,Inferred: Civil/Structural Works Complete for Basement,2025-04-30,2025-05-01,2025-05-07,almost conduiting completed .remianing will be short drops .
+PE-263 380 KV GIS Building,DDC PANEL,DDC PANEL TERMATIONS,,40%,,,,,
+PE-263 380 KV GIS Building,Basement,FA ( Device Installation ),0,30%,,,,,detectors bases in progress.
+"PE-263 380 KV GIS
+TUNNEL",TUNNEL,Fire Alarm ( conduiting+cabling ),15,80 %,,2026-04-30,2026-05-01,2026-05-15,completed
+"PE-263 380 KV GIS
+TUNNEL",TUNNEL,FA ( Device Installation ),0,35%,,,,,
+PE-263 380 KV GIS Building,Roof,HVAC System,7,98%,Inferred: Civil/Structural Works Complete for Roof,2025-04-30,2025-05-01,2025-05-08,
+PE-263 380 KV GIS Building,ceiling,HVAC System,1,98%,GIS Hall cable Trays,2025-06-08,2025-06-09,2025-06-10,"Depends on Cable Trays, but progress is very high (97%). Might finish before trays if remaining work is independent. (Needs review)"
+PE-263 380 KV GIS Building,Basement,HVAC System,3,0%,Inferred: Civil trunch not cleaning yet ,2025-04-30,2025-05-01,2025-05-04,Civil works nearly ready. Immediate start possible.
+PE-263 110 kV GIS Building,GROUND FLOOR,Firefighting,20,90 %,Inferred: Civil/Structural Works Complete for Ceiling,2025-04-30,2025-05-01,2025-05-21,piping network for LCC FM-200 systems completed. remaining will completed upon delivery of cylinders.
+PE-263 110 kV GIS Building,GROUND FLOOR,cylinder installation,0,0 %,,,,,FM-200 cylinders not delivered.
+PE-263 110 kV GIS Building,"GROUND FLOOR( LCC PANELS)
+",Fire Alarm ( conduiting + cabling ),0,80%,,,,,conduiting & cabling for LCC completed .
+PE-263 110 kV GIS Building,"GROUND FLOOR( LCC PANELS)
+",Device installation,0,50%,,,,,detectors bases inside LCC installed. Remaining will be completed upon delivery of CYlinders.
+PE-263 110 kV GIS Building,ceiling,Fire Alarm ( conduiting + cabling ),20,90 %,Inferred: Civil/Structural Works Complete for Ceiling,2025-04-30,2025-05-01,2025-05-09,conduiting almost completed 
+PE-263 110 kV GIS Building,ceiling,,0,25%,,,,,
+PE-263 110 kV GIS Building,Basement,Fire Alarm ( conduiting + cabling ),20,90%,Inferred: Civil/Structural Works Complete for Basement,2025-04-30,2025-05-01,2025-05-20,conduiting & cabling almost done. some short will be completed.
+PE-263 110 kV GIS Building,Basement,FA ( Device Installation ),0,35%,,,,,detectors bases installed .half
+PE-263 110 kV GIS Building,Tunnel,Fire Alarm ( conduiting+cabling ),20,80 %,Inferred: Civil/Structural Works Complete for Basement,2025-04-30,2025-05-01,2025-05-20,Duration adjusted based on 90% progress.
+PE-263 110 kV GIS Building,Tunnel,FA ( Device Installation ),0,30%,,,,,
+PE-263 110 kV GIS Building,GROUND,DDC PANEL TEMANTIONS,,50%,,,,,
+PE-263 110 kV GIS Building,Roof,HVAC System,5,98%,Inferred: Civil/Structural Works Complete for Roof,2025-05-04,2025-05-01,2025-05-10,Civil works for roof assumed ready.
+PE-263 110 kV GIS Building,ceiling (installation),HVAC System,3,100%,Inferred: Civil/Structural Works Complete for Ceiling,2025-04-30,2025-05-01,2025-05-04,Duration adjusted based on 80% progress.
+PE-263 110 kV GIS Building,ceiling (TEST),HVAC System,3,0%,Inferred: Civil/Structural Works Complete for Ceiling,2025-04-30,2025-08-01,2025-08-10,Duration adjusted based on 80% progress.
+PE-263 110 kV GIS Building,Basement,HVAC System,3,53%,Inferred: Civil trunch not cleaning yet ,2025-04-30,2025-05-01,2025-05-04,Civil works nearly ready. Immediate start possible.
+PE-263 Control Building,SW GR Room,Firefighting,2,100%,SWGR Panels Installation,2025-04-23,2025-05-01,2025-05-03,piping network & support installation completed.
+PE-263 Control Building,SW GR Room,Fire Alarm ( conduiting + cabling ),3,90%,SWGR Panels Installation,2025-04-23,2025-05-01,2025-05-04,conduiting completed.
+PE-263 Control Building,SW GR Room,FA ( Device Installation ),0,40%,,,,,
+PE-263 Control Building,SW GR Room (installation),HVAC System,10,100%,SWGR Panels Installation,2025-04-23,2025-05-01,2025-05-02,Predecessor completed. Duration adjusted based on 90% progress.
+PE-263 Control Building,SW GR Room  (TEST),HVAC System,10,0%,SWGR Panels Installation,2025-04-23,2025-08-01,2025-08-10,Predecessor completed. Duration adjusted based on 90% progress.
+PE-263 Control Building,Control Room,Firefighting,12,90%,SAS Panels,2025-07-22,2025-07-23,2025-07-27,piping network & support installation completed.
+PE-263 Control Building,Control Room,Fire Alarm ( conduiting+cabling ),12,86%,SAS Panels,2025-07-22,2025-07-23,2025-07-25,Depends on SAS Panel arrival/installation. Duration adjusted (2 days) for rough-in completion based on 85% progress.
+PE-263 Control Building,Control Room,FA ( Device Installation ),0,40%,,,,,on going
+PE-263 Control Building,Control Room,HVAC System,10,98%,SAS Panels,2025-07-22,2025-07-23,2025-07-25,Depends on SAS Panel installation (Predecessor Report logic). Duration adjusted based on 87% progress. (Note: Overall Plan mentioned HVAC FAT on 26-May).
+PE-263 Control Building,Conference Room,Firefighting,12,100 %,Inferred: Civil/Structural Works Complete for Conf. Room,2025-04-30,2025-05-01,2025-05-03,piping network & support installation completed.
+PE-263 Control Building,Conference Room,Fire Alarm ( conduiting+cabling ),12,90%,Inferred: Civil/Structural Works Complete for Conf. Room,2025-04-30,2025-05-01,2025-05-03,Civil ready. Duration adjusted.
+PE-263 Control Building,Conference Room,FA ( Device Installation ),0,40%,,,,,
+PE-263 Control Building,Conference Room,HVAC System,10,80%,Inferred: Civil/Structural Works Complete for Conf. Room,2025-04-30,2025-05-01,2025-05-08,Civil ready. Duration adjusted.
+PE-263 Control Building,Battery Room,Firefighting,12,100%,Batteries installation,2025-05-27,2025-05-28,2025-05-30,piping network & support installation completed.
+PE-263 Control Building,Battery Room,Fire Alarm ( conduiting+cabling ),12,65%,Batteries installation,2025-05-27,2025-05-28,2025-06-06,Depends on Battery installation. Duration adjusted.
+PE-263 Control Building,Battery Room,FA ( Device Installation ),0,35%,,,,,
+PE-263 Control Building,Battery Room,HVAC System,10,90%,Batteries installation,2025-05-27,2025-05-28,2025-06-07,"Depends on Battery installation. Full duration used (Progress Sheet shows 0% & ""due to civil"", but Civil is nearly ready & Batteries are the driver per Report)."
+PE-263 Control Building,Communication Room,Firefighting,12,92%,Telecom Panels,2025-05-03,2025-05-04,2025-05-07,piping network & supports installtion completed.
+PE-263 Control Building,Communication Room,Fire Alarm ( conduiting+cabling ),12,95%,Telecom Panels,2025-05-03,2025-05-04,2025-05-08,conduiting & cabling completed.
+PE-263 Control Building,Communication Room,FA ( Device Installation ),0,40%,,,,,on going
+PE-263 Control Building,Communication Room (installation),HVAC System,2,100%,Telecom Panels,2025-05-03,2025-05-04,2025-05-06,Depends on Telecom Panel installation. Duration adjusted. (Note: Overall Plan mentioned HVAC FAT on 26-May).
+PE-263 Control Building,Communication Room  (TEST),HVAC System,2,0%,Telecom Panels,2025-05-03,2025-08-01,2025-08-10,Depends on Telecom Panel installation. Duration adjusted. (Note: Overall Plan mentioned HVAC FAT on 26-May).
+PE-263 Control Building,Aux Room,Firefighting,3,90%,AC & DC panels,2025-05-05,2025-05-06,2025-05-09,piping network & supports installtion completed.
+PE-263 Control Building,Aux Room,Fire Alarm ( conduiting+cabling ),12,90%,AC & DC panels,2025-05-05,2025-05-06,2025-05-09,conduiting & cabling completed.
+PE-263 Control Building,Aux Room,FA ( Device Installation ),0,40%,,,,,on going
+PE-263 Control Building,Aux Room (installation),HVAC System,10,100%,AC & DC panels,2025-05-05,2025-05-06,2025-05-07,Depends on AC/DC Panel installation. Duration adjusted. (Note: Overall Plan mentioned HVAC FAT on 26-May).
+PE-263 Control Building,Aux Room  (TEST),HVAC System,10,0%,AC & DC panels,2025-05-05,2025-08-01,2025-08-10,Depends on AC/DC Panel installation. Duration adjusted. (Note: Overall Plan mentioned HVAC FAT on 26-May).
+PE-263 Control Building,Office,Fire Alarm ( conduiting+cabling ),12,90%,Inferred: Civil/Structural Works Complete for Office,2025-04-30,2025-05-01,2025-05-13,Civil ready.
+PE-263 Control Building,Office,FA ( Device Installation ),0,53%,,,,,
+PE-263 Control Building,Office,HVAC System,10,80%,Inferred: Civil/Structural Works Complete for Office,2025-04-30,2025-05-01,2025-05-08,Civil ready. Duration adjusted.
+PE-263 Control Building,Relay Test,Fire Alarm ( conduiting+cabling ),12,85%,Inferred: Civil/Structural Works Complete for Relay Test Room,2025-04-30,2025-05-01,2025-05-13,Civil ready.
+PE-263 Control Building,Relay Test,FA ( Device Installation ),0,40%,,,,,
+PE-263 Control Building,Relay Test,HVAC System,10,80%,Inferred: Civil/Structural Works Complete for Relay Test Room,2025-04-30,2025-05-01,2025-05-08,Civil ready. Duration adjusted.
+PE-263 Control Building,Toilet,Fire Alarm ( conduiting+cabling ),12,80%,Inferred: Civil/Structural Works Complete for Toilet,2025-04-30,2025-05-01,2025-05-13,Civil ready (per Predecessor Report).
+PE-263 Control Building,Toilet,FA ( Device Installation ),0,30%,,,,,
+PE-263 Control Building,Toilet,HVAC System,10,95%,Inferred: Civil/Structural Works Complete for Toilet,2025-04-30,2025-05-01,2025-05-06,Civil ready. Duration adjusted.
+PE-263 Control Building,Store Room,Fire Alarm ( conduiting+cabling ),3,70%,Paint In progress,,,,conduiting almost done. duration adjusted.
+PE-263 Control Building,Store Room,FA ( Device Installation ),0,35%,,,,,pending
+PE-263 Control Building,Fire Protection Room,Firefighting,12,0%,Inferred: Civil/Structural Works Complete for Fire Prot. Room,2025-05-01,2025-05-02,2025-05-14,Depends on Civil room readiness (used FM200 Room date as proxy). Might also depend on later FM200 equipment installation.
+PE-263 Control Building,Fire Protection Room,Fire Alarm ( conduiting+cabling ),12,82%,Inferred: Civil/Structural Works Complete for Fire Prot. Room,2025-05-01,2025-05-02,2025-05-06,conduiting almost done. duration adjusted as per progress.
+PE-263 Control Building,Fire Protection Room,FA ( Device Installation ),0,40%,,,,,
+PE-263 Control Building,Fire Protection Room (installation),HVAC System,10,100%,Inferred: Civil/Structural Works Complete for Fire Prot. Room,2025-05-01,2025-05-02,2025-05-03,Civil ready. Duration adjusted.
+PE-263 Control Building,Fire Protection Room  (TEST),HVAC System,10,0%,Inferred: Civil/Structural Works Complete for Fire Prot. Room,2025-05-01,2025-08-01,2025-08-10,Civil ready. Duration adjusted.
+PE-263 Control Building,Staircase,Fire Alarm ( conduiting+cabling ),6,65%,Inferred: Civil/Structural Works Complete for Staircase,2025-04-30,2025-05-01,2025-05-06,Civil ready (per Predecessor Report). Duration adjusted.
+PE-263 Control Building,Staircase,FA ( Device Installation ),0,20%,,,,,
+PE-263 Control Building,Basement,Fire Alarm ( conduiting+cabling ),12,85%,Inferred: Civil/Structural Works Complete for Basement,2025-04-30,2025-05-01,2025-05-03,conduiting & cabling almost done. drops remaining.
+PE-263 Control Building,Basement,FA ( Device Installation ),0,30%,,,,,
+PE-263 Control Building,Basement,HVAC System,10,50%,Inferred: Civil/Structural Works Complete for Basement,2025-04-30,2025-05-01,2025-05-11,Civil ready.
+PE-263 Control Building,Corridor,Fire Alarm ( conduiting+cabling ),12,88%,Inferred: Civil/Structural Works Complete for Corridor,2025-05-07,2025-05-08,2025-05-13,conduiting completed .upon cylinder delivery all rooms cables will be connected to FM-200 room.
+PE-263 Control Building,Corridor,FA ( Device Installation ),0,60%,,,,,
+PE-263 Control Building,Corridor,HVAC System,10,100%,Inferred: Civil/Structural Works Complete for Corridor,2025-05-07,2025-05-08,2025-05-11,Depends on Civil works completion in the corridor. Duration adjusted.
+PE-263 FM200 Room,"FM200 Room ( CYLINDER
+INSTALLATION )",FM200 Activity (System Install),20,0%,Installation FOR FM200 Cylinders (Material Delivery/Install),2025-08-19,2025-08-20,2025-09-09,"Critically dependent on FM200 Cylinder delivery and installation (late date per Overall Plan). Predecessor is the installation itself, starts right after."
+PE-263 Customer Building 1,Ground,Firefighting,10,90%,Inferred: Civil/Structural Works Complete ,2025-04-29,2025-04-30,2025-05-13,remaining piping will be done after ceiling.
+PE-263 Customer Building 1,Ground,Fire Alarm ( conduiting+cabling ),10,86%,Inferred: Civil/Structural Works Complete ,2025-04-25,2025-04-26,2025-05-15,remaining piping will be done after ceiling.
+PE-263 Customer Building 1,Ground,FA ( Device Installation ),0,25%,,,,,
+PE-263 Customer Building 1 ( cylinder Room ),Cylinder Room ,Fire Fighting,0,60%,,,,,
+PE-263 Customer Building 1 ( cylinder Room ),Cylinder Room ,Fire Alarm ( conduiting+cabling ),0,30 %,,,,,
+PE-263 Customer Building 1,Ground,DDC PANEL TEMANTIONS,,53%,,,,,
+PE-263 Customer Building 1,Ground,HVAC System,10,100%,Inferred: Civil/Structural Works Complete ,2025-04-27,2025-04-28,2025-05-17,Inferred: Civil/Structural Works Complete 
+PE-263 Customer Building 1,External Ducts,HVAC System,0,100%,,,,,
+PE-263 TRANSFORMERS,Outdoor,support & Ring installation,,10%,,,,,
+PE-263 TRANSFORMERS,Outdoor,Fire Alarm (Conduiting & Cabling),0,,,,,,
+PE-263 TRANSFORMERS,Outdoor,Fire Alarm (Device Installation),0,,,,,,
+PE-263 HGIS CONTAINERS,Outdoor,Fire Alarm (Conduiting & Cabling),,50%,,,,,
+PE-263 HGIS CONTAINERS,Outdoor,Fire Alarm (Device Installation),,20%,,,,,
+PE-263 HGIS CONTAINERS,Outdoor,Fire Fighting ( piping network ),,80%,,,,,
+PE-263 HGIS CONTAINERS,Outdoor,Cylinder Installation ,,,,,,,
+PE-301 110kV GIS Building,Ground Floor,Fire Fighting ( piping network ),22,0%,-,,2025-05-25,2025-06-25,"Based on actual durations from P.263 (85th percentile), considering typical delays. Requires material availability and inspection."
+PE-301 110kV GIS Building,Ground Floor,Fire Fighting (Pressure Test & Leak Correction),7,0%,1,2025-06-25,2025-06-26,2025-07-06,Based on similar durations in P.263.
+PE-301 110kV GIS Building,Ground Floor,Fire Alarm (Conduiting & Cabling),18,0%,1,2025-06-25,2025-06-26,2025-07-17,"Based on actual durations from P.263 (75th percentile), with adjustment for potential material delays. Can commence after reasonable progress in FF Piping works."
+PE-301 110kV GIS Building,Ground Floor,Fire Alarm (Device Installation),10,0%,3,2025-07-17,2025-07-20,2025-07-31,Assumes device availability. Risk of delay if not delivered and inspected on time.
+PE-301 110kV GIS Building,Basement,Fire Alarm (Conduiting & Cabling),20,15%,-,,2025-05-25,2025-06-19,Can start in parallel with ground floor subject to resource availability. Duration adjusted for basement complexity based on P.263.
+PE-301 110kV GIS Building,Basement,Fire Alarm (Device Installation),12,0%,5,2025-06-19,2025-06-22,2025-07-07,Duration adjusted for basement complexity.
+PE-301 110kV GIS Building,Roof / Main AHU Area,HVAC (AHU & Fan Installation),8,0%,-,,2025-05-25,2025-06-03,Based on 5 actual days from P.263 with adjustment for realism and accounting for lifting and fixing works.
+PE-301 110kV GIS Building,Ceiling / Distribution Paths,HVAC (Main Ducting - Rough-in),87,100%,7,2025-06-03,2025-06-04,2025-06-19,"(Taken from Output 2, duration 10 days * 1.3) Depends on ceiling completion and installation of duct hangers. Includes Supply & Return."
+PE-301 110kV GIS Building,Ceiling / Distribution Paths,HVAC (Duct Insulation),10,0%,8,2025-06-19,2025-06-22,2025-07-03,(Taken from Output 2)
+PE-301 110kV GIS Building,Basement / Service Areas,HVAC (FCU/Package Unit Installation),7,0%,-,,2025-05-25,2025-06-02,"Estimate based on basement scope, assuming civil works completion."
+PE-301 Customer Building #2,Ground / Main Area,Fire Fighting (Piping Installation),15,80%,-,,2025-05-20,2025-06-09,Adjusted from Customer Building #1 in P.263. Assumes similar scope and material availability.
+PE-301 Customer Building #2,Ground / Main Area,Fire Fighting (Pressure Test & Leak Correction),5,0%,11,2025-06-09,2025-06-10,2025-06-16,Standard activity following piping installation.
+PE-301 Customer Building #2,Ground / Main Area,Fire Alarm (Conduiting & Cabling),15,40%,11,2025-06-09,2025-06-10,2025-06-26,Based on 10 actual days with adjustment for material inspection from P.263.
+PE-301 Customer Building #2,Ground / Main Area,Fire Alarm (Device Installation),8,0%,13,2025-06-26,2025-06-29,2025-07-08,Assumes device availability.
+PE-301 CUSTOMER BUILDING #2,Cylinder Room ,FIRE FIGHTING,0,,,,,,
+PE-301 CUSTOMER BUILDING #2,Cylinder Room ,Fire Alarm (Conduiting & Cabling),0,,,,,,
+PE-301 CUSTOMER BUILDING #2,Ground,DDC PANEL TEMANTIONS,,40%,,,,,
+PE-301 Customer Building #2,External Ducts,HVAC (AHU/FCU Installation),12,95%,-,,2025-05-20,2025-06-04,Based on 10 actual days from P.263 with adjustment for realism. (Output 1)
+PE-301 Customer Building #2,Inside Building hvac works,HVAC (Ducting & Insulation),13,100%,15,2025-06-04,2025-06-05,2025-06-22,(Output 2)
+PE-301 Control Building,Auxillary Room,Fire Fighting (System Installation),15,85%,-,,2025-06-01,2025-06-19,"Critical room; based on similar rooms in P.263. Excludes bathrooms, offices, and meeting rooms."
+PE-301 Control Building,Auxillary Room,Fire Fighting ( piping Test ),10,,17,2025-06-19,2025-06-22,2025-07-03,Depends on completion of fire fighting; adjusted for room complexity.
+PE-301 Control Building,Auxillary Room,Fire Alarm (Conduiting & Cabling),0,50%,,,,,
+PE-301 Control Building,Auxillary Room,Fire Alarm (Device Installation),0,,,,,,
+PE-301 Control Building,Auxillary Room,HVAC (System & Ductwork Installation),0,100%,,,,,
+PE-301 Control Building,SWGR ROOM,Fire Fighting (System Installation),0,85%,,,,,
+PE-301 Control Building,SWGR ROOM,Fire Fighting ( piping Test ),0,,,,,,
+PE-301 Control Building,SWGR ROOM,Fire Alarm (Conduiting & Cabling),0,40%,,,,,
+PE-301 Control Building,SWGR ROOM,Fire Alarm (Device Installation),0,,,,,,
+PE-301 Control Building,SWGR ROOM,HVAC (System & Ductwork Installation),0,100%,,,,,
+PE-301 Control Building,Control Room,Firefighting,0,75%,,,,,
+PE-301 Control Building,Control Room,FF ( piping test ),0,,,,,,
+PE-301 Control Building,Control Room,Fire Alarm (Conduiting & Cabling),0,50%,,,,,
+PE-301 Control Building,Control Room,Fire Alarm (Device Installation),0,,,,,,
+PE-301 Control Building,Control Room,HVAC (System & Ductwork Installation),0,98%,,,,,
+PE-301 Control Building,Cylinder Room ,Cylinder Installation & Piping,0,,,,,,
+PE-301 Control Building,Cylinder Room ,Fire Alarm (Conduiting & Cabling),0,10%,,,,,
+PE-301 Control Building,Cylinder Room ,Fire Alarm (Device Installation),0,,,,,,
+PE-301 Control Building,Battery Room,Fire Fighting ( piping Network installation ),0,90%,,,,,
+PE-301 Control Building,Battery Room,Fire Fighting ( piping test ),0,,,,,,
+PE-301 Control Building,Battery Room,Fire Alarm (Conduiting & Cabling),0,25%,,,,,
+PE-301 Control Building,Battery Room,Fire Alarm (Device Installation),0,,,,,,
+PE-301 Control Building,Battery Room,HVAC (System & Ductwork Installation),,50%,,,,,
+PE-301 Control Building,communication Room,Fire Fighting ( piping Network installation ),0,80%,,,,,
+PE-301 Control Building,communication Room,Fire Fighting ( piping test ),0,,,,,,
+PE-301 Control Building,communication Room,Fire Alarm (Conduiting & Cabling),0,30%,,,,,
+PE-301 Control Building,communication Room,HVAC (System & Ductwork Installation),0,98%,,,,,
+PE-301 Control Building,communication Room,Fire Alarm (Device Installation),0,,,,,,
+PE-301 Control Building,Basement,Fire Alarm (Conduiting & Cabling),0,25%,,,,,
+PE-301 Control Building,Basement,Fire Alarm (Device Installation),0,,,,,,
+PE-301 Control Building,staircases,Fire Alarm (Conduiting & Cabling),0,,,,,,
+PE-301 Control Building,staircases,Fire Alarm (Device Installation),0,,,,,,
+PE-301 Control Building,Corridor,HVAC (System & Ductwork Installation),0,99%,,,,,
+PE-301 Control Building,Corridor,Fire Fighting ( piping Network installation ),0,90 %,,,,,
+PE-301 Control Building,Corridor,Fire Alarm (Conduiting & Cabling),0,25%,,,,,
+PE-301 Control Building,Corridor,Fire Alarm (Device Installation),0,,,,,,
+PE-301 Control Building,GIS ELV Room,HVAC (System & Ductwork Installation),12,98%,-,,2025-06-01,2025-06-16,Can start in parallel with fire fighting if civil works are complete.
+PE-301 Control Building,Relay Room,Fire Fighting (System Installation),14,%,-,,2025-06-01,2025-06-18,"Similar to GIS ELV Room with adjustment for room details. Excludes bathrooms, offices, and meeting rooms."
+PE-301 Control Building,Relay Room,Fire Alarm (Conduiting & Cabling),12,0%,21,2025-06-18,2025-06-19,2025-07-04,"Based on P.263, considering panel installation."
+PE-301 Control Building,Relay Room,Fire Alarm (Device Installation),8,0%,22,2025-07-04,2025-07-06,2025-07-15,Assumes device availability.
+PE-301 Control Building,Relay Room,HVAC (System & Ductwork Installation),10,%,-,,2025-06-01,2025-06-12,"Based on P.263, assuming civil works completion."
+PE-301 Tunnel,Tunnel -1,Fire Alarm (Conduiting & Cabling),22,0%,-,,2025-06-10,2025-07-10,"Longer duration due to access challenges in tunnels from P.263. (Output 1 was 22, Output 2 for Main Tunnel was 20)"
+PE-301 Tunnel,Tunnel -1,Fire Alarm (Device Installation),14,0%,25,2025-07-10,2025-07-13,2025-07-30,Assumes completion of civil works.
+PE-301 Tunnel,Tunnel -2,Fire Alarm (Conduiting & Cabling),22,0%,-,,2025-06-10,2025-07-10,Similar to Tunnel-1; can be in parallel if resources permit.
+PE-301 Tunnel,Tunnel -2,Fire Alarm (Device Installation),14,0%,27,2025-07-10,2025-07-13,2025-07-30,Assumes device availability.
+PE-301 Tunnel,Tunnel -3,Fire Alarm (Conduiting & Cabling),22,0%,-,,2025-06-10,2025-07-10,Similar to other tunnels; based on P.263.
+PE-301 Tunnel,Tunnel -3,Fire Alarm (Device Installation),14,0%,29,2025-07-10,2025-07-13,2025-07-30,Assumes device availability.
+PE-301 Security Building,Ground / Main Hall,Fire Fighting (System Installation),10,0%,-,,,,New building; based on similar small buildings in P.263. **Start date for Security Building needs to be provided.**
+PE-301 Security Building,Ground / Main Hall,Fire Alarm (Conduiting & Cabling),8,0%,31,,,,Based on small buildings in P.263.
+PE-301 Security Building,Ground / Main Hall,Fire Alarm (Device Installation),5,0%,32,,,,Assumes device availability.
+PE-301 Security Building,Ground / Main Hall,HVAC (System & Ductwork Installation),10,30%,-,,,,Based on similar HVAC activities in Customer Building #2. Consolidated estimate for a small unit. **Start date for Security Building needs to be provided.**

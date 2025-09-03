@@ -1,0 +1,70 @@
+System,Item Description,Building Location,Approval Stage,Delivery Status,Quantity (Approved Drawings),Planned Delivery Date,Actual Delivery Date,Remarks
+FA,FIRE ALARM CONTROL PANELS (nfs-...),CONTROL BUILDING,B,Delivered,0,2025-05-05,2025-01-29,Remaining balance delivery confirmed by May 7th (MOM Apr 17)
+HVAC,Ducting Material,110kV Building,B,Delivered,1,2024-12-17,2025-12-17,-
+HVAC,Ducting Material,380kV Building,B,Delivered,1,2025-01-01,2026-01-01,-
+HVAC,Consumable Bulk Material,"380kV Building, 110kV Building, Control Building & Customer Building",B,Delivered,1,2025-01-07,2026-01-07,-
+HVAC,Ducting Material,Control Building (Other Rooms),B,Delivered,1,2025-01-16,2026-01-16,-
+HVAC,Air Outlets (Supply Air Registers),380kV Building & 110kV Building,B,Delivered,1,2025-01-22,2026-01-22,-
+HVAC,Flexible Ducts,Control Building,B,Delivered,1,2025-01-29,2026-01-29,-
+HVAC,Ducting Material,Control Building (Control Room),B,Delivered,1,2025-02-03,2026-02-03,-
+HVAC,Ducting Material (Round Ducts),Control Building,B,Delivered,1,2025-02-11,2026-02-11,-
+HVAC,"Air Outlets (Complete including Ceiling Diffuser, Return Air Grill, Egg Crate Grill, Pressure Relief Damper)","380kV Building, 110kV Building, Control Building, Customer Building",B,Delivered,1,2025-03-05,2026-03-05,-
+HVAC,MSFD,"380kV Building, 110kV Building, Control Building, Customer Building",B,Delivered,80,2025-03-09,2026-03-09,-
+HVAC,MVCD,"380kV Building, 110kV Building, Control Building, Customer Building",B,Delivered,37,2025-03-27,2026-03-27,-
+HVAC,"Electrical Bulk Material (Control Cables, Rigid Metal Conduits, Junction Boxes, Flexible Conduits)","380kV Building, 110kV Building, Control Building, Customer Building",B,Delivered,1,2025-04-30,,-
+HVAC,Packaged Units,"380kV Building, 110kV Building & Customer Building",B,Delivered,10,2025-05-15,,FAT is planned on 4-May-2025. The delivery is subject to FAT report approval.
+HVAC,Air Outlets (Back Draft Damper & Sand Trap Louvers),"380kV Building, 110kV Building, Control Building, Customer Building",B,Delivered,1,2025-05-30,,The material is available in Warehouse.
+HVAC,MSFD,Cable Tunnels,B,Delivered,14,2025-05-30,,-
+HVAC,Packaged Units,Control Building,B,Delivered,4,2025-07-27,,FAT is planned on 30-July-2025. The delivery is subject to FAT report approval.
+HVAC,Spring Isolators,"380kV Building, 110kV Building, Control Building, Customer Building",B,Delivered,120,2025-06-10,,-
+HVAC,DDC Panels,"380kV Building, 110kV Building, Control Building & Customer Building",A,Delivered,7,2025-06-30,,FAT is planned on 15-June-2025. The delivery is subject to FAT report approval.
+HVAC,Ventilation Fans,"380kV Building, 110kV Building, Control Building, Customer Building, etc.",B,Delivered,54,2025-07-13,,-
+HVAC,Split Air-Conditioning Units,"  Security Building, Gate House",B,Delivered,11,2025-07-30,,The Split Units are available in stock and can be delivered at any time.
+FA,"FIRE ALARM DEVICES (DETECTORS, strobe , etc ...)",ALL SITE AREAS,B,Delivered,0,2025-05-05,2025-01-29,Remaining balance delivery confirmed by May 7th (MOM Apr 17)
+FA,MODULES,ALL SITE AREAS,B,Delivered,0,2025-05-05,2025-01-29,Remaining balance delivery confirmed by May 7th (MOM Apr 17)
+FA,CABLES,ALL SITE AREAS,B,Delivered,0,2025-05-05,2025-02-11,Remaining balance delivery confirmed by May 7th (MOM Apr 17)
+FA,FITTINGS,ALL SITE AREAS,B,Delivered,0,2025-05-05,2025-04-11,Remaining balance delivery confirmed by May 7th (MOM Apr 17)
+FA,BOXES,ALL SITE AREAS,B,Delivered,0,2025-05-05,2025-04-11,Remaining balance delivery confirmed by May 7th (MOM Apr 17)
+FF,FIRE HYDRANT PIPES,OUTSIDE BUILDING AREA,B,Delivered,0,2025-06-25,2025-04-14,Target Mid-May (TBC by Almajal as per MOM Apr 17)
+FF,FIRE HYDRANTS,OUTSITE BUILDING AREA,B,Delivered,0,2025-07-15,2025-06-22,Target Mid-May (TBC by Almajal as per MOM Apr 17)
+FF,HOSE CABINETS,OUTSIDE BUILDING AREA,B,Not Delivered,0,2025-07-15,,Target Mid-May (TBC by Almajal as per MOM Apr 17)
+FF,FITTINGS (Hydrant System),OUTSIDE BUILDING AREA,B,Delivered,0,2025-05-13,2025-04-14,Target Mid-May (TBC by Almajal as per MOM Apr 17)
+FF,FM-200 SYSTEM PIPES,CONTROL BUILDING (PE-263 ),B,Delivered,0,2024-02-03,2025-02-03,Delivered already & installation in progress
+FA ,FIRE ALARM CONDUITS & FITTINGS,CONTROL BUILDING ( PE-301 ),B,DELIVERED,0,,2025-06-11,Delivered already & installation in progress
+FA,"FIRE ALARM DEVICES (DETECTORS, strobe , etc ...)",CONTROL BUILDING ( PE-301 ),B,DELIVERED,0,,2025-05-19,
+FF,FM-200 SYSTEMS PIPES & FITTINGS,CONTROL BUILDING ( PE-301 ),B,DELIVERED,0,,2025-06-22,INSTALLATION IN PROGRESS
+,FIRE EXTINGUISHERS,CONTROL BUILDING (PE-301 ),B,NOT DELIVERED,0,,,
+FA,FIRE ALARM CONDUITS & FITTINGS ( PENDING ),BATTERY ROOM ( PE-301),B,Delivered,0,,2025-07-06,
+Security,Conduits & Accessories,"CONTROL BUILDING, 380kV Building, 110kV Building, Security Equ building
+, Main Gate+p Gate, ",,Delivered,,,2025-07-06,
+Security,Cat 6 Cables,"CONTROL BUILDING, 380kV Building, 110kV Building, Security Equ building",,Delivered,,,2025-07-06,
+Security,Power Cable,"CONTROL BUILDING, 380kV Building, 110kV Building, Security Equ building
+, Main Gate+p Gate, Emergency Gate",,Delivered,,,2025-07-06,
+Security,Fiber Cable,Outdoor Site Area,,Not Delivered,,2025-08-11,,"
+"
+Security,Cameras,"CONTROL BUILDING, 380kV Building, 110kV Building, Security Equ building
+, Main Gate+p Gate,",,Delivered,,,2025-07-09,Delivered including the expansion scope cameras
+Security,Card Readers,"CONTROL BUILDING, 380kV Building, 110kV Building, Security Equ building
+, Main Gate+p Gate,",,Not Delivered,,,,"Installation of waterproof boxes for card readers is in progress
+"
+Security,Access Controlloer,"CONTROL BUILDING,Security Equ building",,Not Delivered,,,,
+Security,"Megnatic locks, door contact, emergency break glass,push buttons","CONTROL BUILDING, 380kV Building, 110kV Building, Security Equ building
+, Main Gate+p Gate,",,Delivered,,,2025-07-06,
+Security,Network Switch,"CONTROL BUILDING, 380kV Building, 110kV Building, Security Equ building",,Not Delivered,,,,
+Security,UPS,Security Equ building,,Delivered,,,2025-07-15,
+Security,IP Telephone,"Security Equ building, Main Gate",,Delivered,,,2025-07-06,
+Security,Workstation,"Security Equ building, Main Gate+ P Gate",,Partial Delivery,,,,
+Security,Poles,Outdoor Site Area,,Partial,,,,"All Anchor Bolts are delivered
+waiting for poles"
+Security,Class 1 Fence,Outdoor Site Area,,Partial ( all posts have been delivered),,2025-08-15,,"Expected full delivery on 15-8-2025 ( line posts)
+"
+Security,Security Gates,Outdoor Site Area,,Not Delivered,,,,Waiting for materials transmittal approvals
+Security,IDAS,Outdoor Site Area,,Partial,,2025-07-07,,"Materials collection is in progress
+POE+media converters are received only
+Waiting for materials transmittal approvals"
+Security,Lighitng ,Outdoor Site Area,,Not Delivered,,,,
+Security,Arm Barrier,Main Gate + P Gate,,Delivered,,,2025-07-08,
+Security,"Explosive Detector, Handgield Inspector",Main Gate + P Gate,,Not Delivered,,,,"(End-User Certificate (EUC) is required
+"
+TEST_ENTRY_123,Test Material,100,50,Test Supplier,2025-07-30,2025-07-30,In Progress,Notes for test entry
+Test System,TEST_ENTRY_123,Test Building,Test Approval,Test Status,1,2025-07-30,2025-07-30,Notes for test entry
