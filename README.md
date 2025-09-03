@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Smart Project Dashboard
 
 لوحة معلومات المشروع الذكية - تطبيق ويب ثنائي اللغة (العربية/الإنجليزية) يعرض مؤشرات الأداء الرئيسية من Google Sheets مع رؤى ذكية مدعومة بالذكاء الاصطناعي.
@@ -110,3 +111,6 @@ NEXT_PUBLIC_BASE_URL=http://localhost:3000
 ## الترخيص
 
 هذا المشروع مرخص تحت رخصة MIT - انظر ملف [LICENSE](LICENSE) للتفاصيل.
+=======
+# progress-manpower-dashboard
+>>>>>>> d51fef8a78b10b4d445a0336e3a04e83e54cc6b7
