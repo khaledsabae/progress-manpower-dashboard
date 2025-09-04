@@ -16,6 +16,8 @@ import { AIMessage, HumanMessage, BaseMessage } from "@langchain/core/messages";
 import { ChatPromptTemplate, MessagesPlaceholder } from "@langchain/core/prompts";
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 
+import { parseSlashCommand, executeGrandeurCommand, formatResultForChat } from '@/services/grandeur';
+
 // إعداد الكاش مع مدة تخزين ساعة واحدة (3600 ثانية)
 const cache = new NodeCache({ stdTTL: 3600 });
 
@@ -131,6 +133,27 @@ export async function POST(req: NextRequest) {
         // التحقق من صحة الرسالة
         if (!message || typeof message !== 'string' || message.trim().length === 0) {
             return NextResponse.json({ error: 'Invalid message format' }, { status: 400 });
+        }
+
+        // Project Grandeur: Handle slash-commands early (Module 1)
+        if (message.trim().startsWith('/')) {
+            try {
+                const locale = /[\u0600-\u06FF]/.test(message) ? 'ar' : 'en';
+                const parsed = parseSlashCommand(message);
+                const exec = await executeGrandeurCommand({
+                    command: parsed.command,
+                    args: parsed.args,
+                    locale,
+                });
+                const replyText = formatResultForChat(exec, locale);
+                return NextResponse.json({ reply: replyText });
+            } catch (e: any) {
+                console.error('[API /api/chat] Grandeur command error:', e);
+                const errMsg = /[\u0600-\u06FF]/.test(message)
+                    ? `خطأ أثناء تنفيذ الأمر: ${e?.message || 'Unknown error'}`
+                    : `Error executing command: ${e?.message || 'Unknown error'}`;
+                return NextResponse.json({ reply: errMsg }, { status: 500 });
+            }
         }
 
         // 1. جلب البيانات من الكاش أو Google Sheets

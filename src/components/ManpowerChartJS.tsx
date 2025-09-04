@@ -137,7 +137,7 @@ export function ManpowerChartJS({ data }: ManpowerChartJSProps) {
         border: { display: false }
       }
     }
-  }), [chartData.labels, axis, grid, tooltipBg, tooltipText, background]);
+  }), [chartData.labels, axis, grid, tooltipBg, tooltipText]);
 
   return (
     <div style={{ position: 'relative', height: '100%', width: '100%' }}>

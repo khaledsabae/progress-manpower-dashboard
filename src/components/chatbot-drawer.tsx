@@ -143,7 +143,7 @@ export function ChatbotDrawer() {
             inputRef.current?.focus(); // رجع الفوكس للانبوت
         }
     // غيرنا الاعتمادية من input إلى messages عشان لو اليوزر ضغط انتر بسرعة مرتين مثلاً
-    }, [messages]); // Dependency array updated
+    }, [messages, input]); // Dependency array updated
 
     // Handle Enter key press in input field
     const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {

@@ -112,7 +112,7 @@ export function MaterialTab({
     const today = startOfDay(new Date()).getTime();
     const upcomingCutoffTimestamp = startOfDay(addDays(new Date(), 5)).getTime();
 
-    const safeData = Array.isArray(data) ? data : [];
+    const safeData = useMemo(() => Array.isArray(data) ? data : [], [data]);
     const safeFilters = filters || {};
     const systemOptions = (safeFilters.systems && Array.isArray(safeFilters.systems)) ? safeFilters.systems : ["All Systems"];
     const statusOptions = (safeFilters.statuses && Array.isArray(safeFilters.statuses)) ? safeFilters.statuses : ["All Statuses"];

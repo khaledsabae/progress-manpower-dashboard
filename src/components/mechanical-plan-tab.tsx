@@ -86,7 +86,7 @@ export function MechanicalPlanTab({
     const upcomingCutoffTimestamp = startOfDay(addDays(new Date(todayTimestamp), 5)).getTime();
 
     // تأمين المتغيرات اللي ممكن تسبب مشكلة لو undefined
-    const safeData = Array.isArray(data) ? data : [];
+    const safeData = useMemo(() => Array.isArray(data) ? data : [], [data]);
     const safeStatusCounts = Array.isArray(statusCounts) ? statusCounts : [];
     const safeSummaryData = summaryData || { totalActivities: 0, completedActivities: 0, ongoingActivities: 0, notStartedActivities: 0, activitiesWithNAStatus: 0 };
 

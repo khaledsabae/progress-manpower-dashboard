@@ -1,11 +1,3 @@
-<<<<<<< HEAD
-import {redirect} from 'next/navigation';
-
-export default function RootPage() {
-  // Redirect root to default locale
-  redirect('/ar');
-}
-=======
 // src/app/page.tsx
 "use client";
 
@@ -266,6 +258,7 @@ export default function Home() {
     const handleMaterialStatusFilterChange = useCallback((v: string) => setSelectedDeliveryStatus(v), []);
     const handleMaterialLocationFilterChange = useCallback((v: string) => setSelectedBuildingLocation(v), []);
     const handleMaterialApprovalFilterChange = useCallback((v: string) => setSelectedApprovalStage(v), []);
+
     const handleMaterialSort = useCallback((col: MaterialSortColumn) => {
         setMaterialSortState(prev => ({ column: col, direction: prev.column === col && prev.direction === 'asc' ? 'desc' : 'asc' }));
     }, []);
@@ -330,8 +323,8 @@ export default function Home() {
 
     const handleMechanicalPlanSort = useCallback((col: MechanicalPlanSortColumn) => {
         const validCols: Array<keyof EnhancedMechanicalPlanRow> = ['areaBuilding', 'locationRoomLevel', 'mechanicalActivitySystem', 'originalDurationDays', 'currentProgressPercentage', 'keyPredecessorActivity', 'predecessorFinishTimestamp', 'calculatedStartTimestamp', 'calculatedFinishTimestamp', 'remarksJustification', 'actualStatus', 'id'];
-        if (validCols.includes(col as keyof EnhancedMechanicalPlanRow)) { setMechanicalPlanSortState(prev => ({ column: col, direction: prev.column === col && prev.direction === 'asc' ? 'desc' : 'asc' }));
-        } else { /* console.warn(`Attempted to sort by invalid column: ${col}`); */ }
+        if (validCols.includes(col as keyof EnhancedMechanicalPlanRow)) { setMechanicalPlanSortState(prev => ({ column: col, direction: prev.column === col && prev.direction === 'asc' ? 'desc' : 'asc' })); }
+        else { /* console.warn(`Attempted to sort by invalid column: ${col}`); */ }
     }, []);
 
     const sortedMechanicalPlanData = useMemo((): EnhancedMechanicalPlanRow[] => {
@@ -419,7 +412,7 @@ export default function Home() {
     const weeklyVelocity = useMemo((): number | null => {
         if (historicalLoading || !Array.isArray(historicalData) || historicalData.length < 2) { return null; }
         const uniqueTimestamps = Array.from(new Set(historicalData.map(r => r?.snapshotTimestamp))).filter((ts): ts is number => ts !== null && !isNaN(ts) && isFinite(ts)).sort((a, b) => a - b);
-        if (uniqueTimestamps.length < 2) { return null; }
+        if (uniqueTimestamps.length < 2) return null;
         const today = startOfDay(new Date()).getTime(); const sevenDaysAgo = startOfDay(subDays(new Date(), 7)).getTime();
         const latestValidTimestamp = uniqueTimestamps.filter(ts => ts <= today).pop(); const pastValidTimestamp = uniqueTimestamps.filter(ts => ts <= sevenDaysAgo).pop();
         if (!latestValidTimestamp || !pastValidTimestamp || latestValidTimestamp <= pastValidTimestamp) return null;
@@ -675,4 +668,3 @@ export default function Home() {
         </div>
     );
 }
->>>>>>> d51fef8a78b10b4d445a0336e3a04e83e54cc6b7
