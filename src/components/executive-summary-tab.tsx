@@ -23,8 +23,8 @@ interface ExecutiveSummaryTabProps {
     progressTrends: ProgressTrends | null;
 }
 
-// --- Helper Components/Functions ---
-const TrendTooltip = ({ active, payload, label }: any) => {
+// --- Performance Optimization: Memoize expensive calculations ---
+const MemoizedTrendTooltip = React.memo(({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
         return (
             <div className="bg-popover text-popover-foreground border px-1 py-0.5 rounded shadow-sm text-xs">
@@ -33,7 +33,40 @@ const TrendTooltip = ({ active, payload, label }: any) => {
         );
     }
     return null;
-};
+});
+
+MemoizedTrendTooltip.displayName = 'MemoizedTrendTooltip';
+
+const MemoizedProgressBars = React.memo(({
+    loading,
+    historicalComparisons
+}: {
+    loading: boolean;
+    historicalComparisons: ComparisonResults | null;
+}) => (
+    <div className="flex-grow flex flex-col justify-around space-y-3 pt-0">
+        {/* HVAC */}
+        <div className="flex items-center justify-between space-x-3">
+            <span className="text-sm font-medium flex-1 truncate">HVAC</span>
+            {loading ? <Icons.spinner className="h-4 w-4 animate-spin" /> : <span className="text-sm font-semibold w-12 text-right">{historicalComparisons?.latestMetrics?.avgHvac !== null ? `${historicalComparisons?.latestMetrics?.avgHvac.toFixed(1)}%` : 'N/A'}</span>}
+            <Progress value={historicalComparisons?.latestMetrics?.avgHvac ?? 0} aria-label="HVAC progress" className="h-2 w-[100px]" />
+        </div>
+        {/* Firefighting */}
+        <div className="flex items-center justify-between space-x-3">
+            <span className="text-sm font-medium flex-1 truncate">Firefighting</span>
+            {loading ? <Icons.spinner className="h-4 w-4 animate-spin" /> : <span className="text-sm font-semibold w-12 text-right">{historicalComparisons?.latestMetrics?.avgFf !== null ? `${historicalComparisons?.latestMetrics?.avgFf.toFixed(1)}%` : 'N/A'}</span>}
+            <Progress value={historicalComparisons?.latestMetrics?.avgFf ?? 0} aria-label="Firefighting progress" className="h-2 w-[100px]" />
+        </div>
+        {/* Fire Alarm */}
+        <div className="flex items-center justify-between space-x-3">
+            <span className="text-sm font-medium flex-1 truncate">Fire Alarm</span>
+            {loading ? <Icons.spinner className="h-4 w-4 animate-spin" /> : <span className="text-sm font-semibold w-12 text-right">{historicalComparisons?.latestMetrics?.avgFa !== null ? `${historicalComparisons?.latestMetrics?.avgFa.toFixed(1)}%` : 'N/A'}</span>}
+            <Progress value={historicalComparisons?.latestMetrics?.avgFa ?? 0} aria-label="Fire Alarm progress" className="h-2 w-[100px]" />
+        </div>
+    </div>
+));
+
+MemoizedProgressBars.displayName = 'MemoizedProgressBars';
 
 const renderTrendIcon = (change: number | null | undefined) => {
     if (change === null || change === undefined || change === 0) return <Minus className="h-4 w-4 text-muted-foreground" />;
@@ -162,7 +195,7 @@ export function ExecutiveSummaryTab({
                                  <AreaChart data={overallTrendData} margin={{ top: 5, right: 10, left: -20, bottom: 0 }}>
                                       <defs> <linearGradient id="colorProgress" x1="0" y1="0" x2="0" y2="1"> <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.6}/> <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0}/> </linearGradient> </defs>
                                       <XAxis dataKey="date" tick={{ fontSize: 10 }} interval="preserveStartEnd" minTickGap={30}/>
-                                      <RechartsTooltip content={<TrendTooltip />} cursor={{stroke: 'hsl(var(--primary))', strokeWidth: 1, strokeDasharray: '3 3'}}/>
+                                      <RechartsTooltip content={<MemoizedTrendTooltip />} cursor={{stroke: 'hsl(var(--primary))', strokeWidth: 1, strokeDasharray: '3 3'}}/>
                                       <Area type="monotone" dataKey="value" stroke="hsl(var(--primary))" fillOpacity={1} fill="url(#colorProgress)" strokeWidth={2} connectNulls={false} />
                                  </AreaChart>
                              </ResponsiveContainer>

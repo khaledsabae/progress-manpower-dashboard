@@ -1,5 +1,5 @@
 import { FileText, Search, AlertCircle } from 'lucide-react';
-import { Button } from './Button';
+import { Button } from './button';
 import { cn } from '@/lib/utils';
 
 type EmptyStateVariant = 'default' | 'search' | 'error';

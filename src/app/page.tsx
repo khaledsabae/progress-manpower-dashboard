@@ -33,6 +33,9 @@ import { format, startOfYear, isValid, startOfDay, subDays, parseISO } from 'dat
 import { DateRange } from "react-day-picker";
 import * as XLSX from 'xlsx';
 import { cn } from '@/lib/utils';
+// --- Autonomous Insights Imports ---
+import ProactiveNotifications from '@/components/ProactiveNotifications';
+import { initializeAutonomousAnalysis } from '@/services/autonomous-insights';
 import type {
     ManpowerSortState, MaterialSortState, MechanicalPlanSortState,
     ManpowerSortColumn, MaterialSortColumn, MechanicalPlanSortColumn,

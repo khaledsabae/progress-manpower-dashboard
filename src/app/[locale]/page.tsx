@@ -1,9 +1,10 @@
 import { getTranslations } from 'next-intl/server';
-import { Card } from '@/components/ui/Card';
+import { Card } from '@/components/ui/card';
 import { OverallProgressCard } from '@/components/OverallProgressCard';
 import { ManpowerStatusCard } from '@/components/ManpowerStatusCard';
 import { AIInsightCard } from '@/components/AIInsightCard';
 import { ProjectTimelineChart } from '@/components/ProjectTimelineChart';
+import { MonthlySummarySection } from '@/components/MonthlySummarySection';
 
 async function fetchProjectData() {
   try {
@@ -51,6 +52,9 @@ export default async function OverviewPage() {
         <ManpowerStatusCard />
         <AIInsightCard projectData={projectData} />
       </div>
+
+      {/* Monthly Summary Section (MVS) */}
+      <MonthlySummarySection />
 
       {/* Charts Row */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

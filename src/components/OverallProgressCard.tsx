@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { Card } from '@/components/ui/Card';
+import { Card } from '@/components/ui/card';
 import { TrendingUp, Activity } from 'lucide-react';
 import { useProgressData } from '@/hooks/useDataFetcher';
 import { DataErrorState } from '@/components/ui/ErrorState';

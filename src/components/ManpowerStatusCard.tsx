@@ -1,12 +1,12 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { Card } from '@/components/ui/Card';
+import { Card } from '@/components/ui/card';
 import { Users, UserCheck, RefreshCw } from 'lucide-react';
 import { useManpowerData } from '@/hooks/useDataFetcher';
 import { DataErrorState } from '@/components/ui/ErrorState';
 import { LoadingSkeleton } from '@/components/ui/LoadingSkeleton';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 import { ManpowerData } from '@/types/dashboard';
 
 interface ManpowerStats {
@@ -79,7 +79,7 @@ export function ManpowerStatusCard() {
         <DataErrorState 
           error={error} 
           onRetry={refetch}
-          retryButtonText={t('retry')}
+          
         />
       </Card>
     );

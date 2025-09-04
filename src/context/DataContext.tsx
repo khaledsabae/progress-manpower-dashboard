@@ -1,10 +1,12 @@
 'use client';
 
-import React, { createContext, useContext, useReducer, useCallback, useRef, useEffect } from 'react';
+import React, { createContext, useContext, useReducer, useCallback, useRef, useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { toast } from 'react-hot-toast';
 import { DataState, DashboardData, DataFetchError } from '@/types/dashboard';
 import { ErrorState } from '@/components/ui/ErrorState';
+import { fetchWithTimeout, isTimeoutError, CLIENT_FETCH_TIMEOUT_MS, combineSignals } from '@/lib/http/timeout';
+import type { MonthlyIndexResponse, MonthlySnapshotsResponse, YearMonth } from '@/types/monthly';
 
 // Types
 type DataType = 'progress' | 'manpower' | 'aiInsights' | 'risk';
@@ -18,10 +20,13 @@ interface DataCache {
 }
 
 interface DataStateContextType {
-  getData: (type: DataType, forceRefresh?: boolean) => Promise<DashboardData | null>;
+  getData: (type: DataType, forceRefresh?: boolean, signal?: AbortSignal) => Promise<DashboardData | null>;
   refreshData: (type?: DataType) => Promise<void>;
   getDataState: (type: DataType) => DataState<any>;
   isRefreshing: (type: DataType) => boolean;
+  // Monthly APIs
+  getMonthlyIndex: (options?: { order?: 'asc' | 'desc'; limit?: number; from?: YearMonth; to?: YearMonth; signal?: AbortSignal }) => Promise<MonthlyIndexResponse>;
+  getMonthlySnapshot: (yearMonth: YearMonth, options?: { signal?: AbortSignal }) => Promise<MonthlySnapshotsResponse>;
 }
 
 interface DataProviderProps {
@@ -86,6 +91,14 @@ export function DataProvider({ children, initialData }: DataProviderProps) {
   const t = useTranslations();
   const cache = useRef<DataCache>({});
   const inFlightRequests = useRef<Record<string, Promise<any>>>({});
+  const abortControllerMap = useRef<Map<DataType, AbortController>>(new Map());
+  // Monthly caches and controllers
+  const monthlyIndexCache = useRef<{ data: MonthlyIndexResponse; timestamp: number; ttl: number } | null>(null);
+  const monthlyIndexInFlight = useRef<Promise<MonthlyIndexResponse> | null>(null);
+  const monthlyIndexAbort = useRef<AbortController | null>(null);
+  const monthlySnapshotCache = useRef<Record<YearMonth, { data: MonthlySnapshotsResponse; timestamp: number; ttl: number }>>({});
+  const monthlySnapshotInFlight = useRef<Record<YearMonth, Promise<MonthlySnapshotsResponse>>>({});
+  const monthlySnapshotAbortMap = useRef<Map<YearMonth, AbortController>>(new Map());
   
   // Initialize state with initial data if provided
   const [state, dispatch] = useReducer(dataReducer, {
@@ -108,7 +121,7 @@ export function DataProvider({ children, initialData }: DataProviderProps) {
   });
 
   // Fetch data from API
-  const fetchData = useCallback(async (type: DataType): Promise<DashboardData> => {
+  const fetchData = useCallback(async (type: DataType, signal?: AbortSignal): Promise<DashboardData> => {
     const cacheKey = `${type}`;
     const cached = cache.current[cacheKey];
     
@@ -118,6 +131,16 @@ export function DataProvider({ children, initialData }: DataProviderProps) {
     }
     
     try {
+      // Abort any existing request for this type
+      if (abortControllerMap.current.has(type)) {
+        abortControllerMap.current.get(type)!.abort();
+      }
+      const controller = new AbortController();
+      abortControllerMap.current.set(type, controller);
+      const combinedSignal = signal ? combineSignals([signal, controller.signal]) : controller.signal;
+      
+      const start = Date.now();
+      
       // Check if there's already a request in flight
       if (cacheKey in inFlightRequests.current) {
         return inFlightRequests.current[cacheKey];
@@ -127,7 +150,7 @@ export function DataProvider({ children, initialData }: DataProviderProps) {
       const request = (async () => {
         // Helper to fetch consolidated project data once when needed
         const fetchProjectData = async () => {
-          const resp = await fetch('/api/project-data');
+          const resp = await fetchWithTimeout('/api/project-data', { signal: combinedSignal }, CLIENT_FETCH_TIMEOUT_MS);
           if (!resp.ok) {
             const err = await resp.json().catch(() => ({}));
             throw {
@@ -153,11 +176,12 @@ export function DataProvider({ children, initialData }: DataProviderProps) {
           result = projectData?.mechanicalPlan ?? [];
         } else if (type === 'aiInsights') {
           const projectData = await fetchProjectData();
-          const resp = await fetch('/api/ai-insights', {
+          const resp = await fetchWithTimeout('/api/ai-insights', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ projectData }),
-          });
+            signal: combinedSignal,
+          }, CLIENT_FETCH_TIMEOUT_MS);
           const json = await resp.json().catch(() => ({}));
           if (!resp.ok || json?.success === false) {
             throw {
@@ -171,7 +195,7 @@ export function DataProvider({ children, initialData }: DataProviderProps) {
           result = json?.data ?? json;
         } else {
           // Fallback: attempt generic GET
-          const response = await fetch(`/api/${type}`);
+          const response = await fetchWithTimeout(`/api/${type}`, { signal: combinedSignal }, CLIENT_FETCH_TIMEOUT_MS);
           if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
             throw {
@@ -203,15 +227,105 @@ export function DataProvider({ children, initialData }: DataProviderProps) {
         return await request;
       } finally {
         delete inFlightRequests.current[cacheKey];
+        const duration = Date.now() - start;
+        console.log(`[fetchData] ${type} completed in ${duration}ms`);
       }
     } catch (error) {
-      console.error(`Error fetching ${type}:`, error);
+      if (isTimeoutError(error)) {
+        toast.error('Request timed out. Please try again.', { id: `${type}-timeout` });
+      } else {
+        console.error(`Error fetching ${type}:`, error);
+      }
       throw error;
     }
   }, []);
 
+  // --- Module 5: Monthly fetchers with caching, abort, and timeouts ---
+  const getMonthlyIndex = useCallback(async (options?: { order?: 'asc' | 'desc'; limit?: number; from?: YearMonth; to?: YearMonth; signal?: AbortSignal }): Promise<MonthlyIndexResponse> => {
+    const order = options?.order ?? 'desc';
+    const limit = options?.limit ?? 12;
+    const from = options?.from;
+    const to = options?.to;
+
+    // Serve from cache if fresh and params match common defaults
+    const cacheEntry = monthlyIndexCache.current;
+    if (!from && !to && order === 'desc' && limit === 12 && cacheEntry && Date.now() - cacheEntry.timestamp < cacheEntry.ttl) {
+      return cacheEntry.data;
+    }
+
+    // Abort previous
+    if (monthlyIndexAbort.current) monthlyIndexAbort.current.abort();
+    const controller = new AbortController();
+    monthlyIndexAbort.current = controller;
+    const combinedSignal = options?.signal ? combineSignals([options.signal, controller.signal]) : controller.signal;
+
+    if (monthlyIndexInFlight.current) {
+      try { return await monthlyIndexInFlight.current; } finally { monthlyIndexInFlight.current = null; }
+    }
+
+    const qs = new URLSearchParams();
+    if (order) qs.set('order', order);
+    if (limit) qs.set('limit', String(limit));
+    if (from) qs.set('from', from);
+    if (to) qs.set('to', to);
+
+    const promise = (async () => {
+      const resp = await fetchWithTimeout(`/api/monthly?${qs.toString()}`, { signal: combinedSignal }, CLIENT_FETCH_TIMEOUT_MS);
+      const json = await resp.json().catch(() => ({}));
+      if (!resp.ok) {
+        const message = (json as any)?.error || 'Failed to fetch monthly index';
+        throw Object.assign(new Error(message), { status: resp.status, code: (json as any)?.code, retryable: resp.status !== 404 });
+      }
+      const data = json as MonthlyIndexResponse;
+      // Cache default common case
+      if (!from && !to && order === 'desc' && limit === 12) {
+        monthlyIndexCache.current = { data, timestamp: Date.now(), ttl: CACHE_TTL };
+      }
+      return data;
+    })();
+
+    monthlyIndexInFlight.current = promise;
+    try { return await promise; } finally { monthlyIndexInFlight.current = null; }
+  }, []);
+
+  const getMonthlySnapshot = useCallback(async (yearMonth: YearMonth, options?: { signal?: AbortSignal }): Promise<MonthlySnapshotsResponse> => {
+    // Serve from cache if still valid
+    const cached = monthlySnapshotCache.current[yearMonth];
+    if (cached && Date.now() - cached.timestamp < cached.ttl) {
+      return cached.data;
+    }
+
+    // Abort previous for this YM
+    if (monthlySnapshotAbortMap.current.has(yearMonth)) {
+      monthlySnapshotAbortMap.current.get(yearMonth)!.abort();
+    }
+    const controller = new AbortController();
+    monthlySnapshotAbortMap.current.set(yearMonth, controller);
+    const combinedSignal = options?.signal ? combineSignals([options.signal, controller.signal]) : controller.signal;
+
+    // De-dupe in-flight
+    if (monthlySnapshotInFlight.current[yearMonth]) {
+      try { return await monthlySnapshotInFlight.current[yearMonth]; } finally { delete monthlySnapshotInFlight.current[yearMonth]; }
+    }
+
+    const promise = (async () => {
+      const resp = await fetchWithTimeout(`/api/monthly/${yearMonth}`, { signal: combinedSignal }, CLIENT_FETCH_TIMEOUT_MS);
+      const json = await resp.json().catch(() => ({}));
+      if (!resp.ok) {
+        const message = (json as any)?.error || 'Failed to fetch monthly snapshot';
+        throw Object.assign(new Error(message), { status: resp.status, code: (json as any)?.code, retryable: resp.status !== 404 && resp.status !== 400 });
+      }
+      const data = json as MonthlySnapshotsResponse;
+      monthlySnapshotCache.current[yearMonth] = { data, timestamp: Date.now(), ttl: CACHE_TTL };
+      return data;
+    })();
+
+    monthlySnapshotInFlight.current[yearMonth] = promise;
+    try { return await promise; } finally { delete monthlySnapshotInFlight.current[yearMonth]; }
+  }, []);
+
   // Get data with caching and loading states
-  const getData = useCallback(async (type: DataType, forceRefresh = false): Promise<DashboardData | null> => {
+  const getData = useCallback(async (type: DataType, forceRefresh = false, signal?: AbortSignal): Promise<DashboardData | null> => {
     const cacheKey = `${type}`;
     
     try {
@@ -227,7 +341,7 @@ export function DataProvider({ children, initialData }: DataProviderProps) {
       
       dispatch({ type: 'FETCH_STARTED', payload: { dataType: type } });
       
-      const data = await fetchData(type);
+      const data = await fetchData(type, signal);
       dispatch({ 
         type: 'FETCH_SUCCESS', 
         payload: { dataType: type, data } 
@@ -249,7 +363,9 @@ export function DataProvider({ children, initialData }: DataProviderProps) {
       });
       
       // Show toast for non-retryable errors or first-time errors
-      if (!errorObj.retryable || state[type].status === 'idle') {
+      if (isTimeoutError(error)) {
+        // Already toasted in fetchData
+      } else if (!errorObj.retryable || state[type].status === 'idle') {
         toast.error(
           errorObj.message || t('errorOccurred'),
           { id: `${type}-error` }
@@ -328,6 +444,8 @@ export function DataProvider({ children, initialData }: DataProviderProps) {
     refreshData,
     getDataState,
     isRefreshing,
+    getMonthlyIndex,
+    getMonthlySnapshot,
   };
 
   return (
@@ -365,4 +483,90 @@ export function useDataType<T extends DashboardData>(type: DataType, options: { 
     refresh: () => refreshData(type),
     isRefreshing: isRefreshing(type),
   };
+}
+
+// --- Module 5 hooks ---
+export function useMonthlyIndex(options: { order?: 'asc' | 'desc'; limit?: number; from?: YearMonth; to?: YearMonth; autoFetch?: boolean } = {}) {
+  const { order, limit, from, to, autoFetch = true } = options;
+  const { getMonthlyIndex } = useData();
+  const [data, setData] = useState<MonthlyIndexResponse | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<any>(null);
+
+  useEffect(() => {
+    if (!autoFetch) return;
+    const controller = new AbortController();
+    (async () => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const res = await getMonthlyIndex({ order, limit, from, to, signal: controller.signal });
+        setData(res);
+      } catch (err) {
+        if (!isTimeoutError(err)) console.error('useMonthlyIndex error:', err);
+        setError(err);
+      } finally {
+        setIsLoading(false);
+      }
+    })();
+    return () => controller.abort();
+  }, [order, limit, from, to, autoFetch, getMonthlyIndex]);
+
+  const refresh = useCallback(async () => {
+    const controller = new AbortController();
+    try {
+      setIsLoading(true);
+      const res = await getMonthlyIndex({ order, limit, from, to, signal: controller.signal });
+      setData(res);
+      return res;
+    } finally {
+      controller.abort();
+      setIsLoading(false);
+    }
+  }, [order, limit, from, to, getMonthlyIndex]);
+
+  return { data, isLoading, error, refresh };
+}
+
+export function useMonthlySnapshot(yearMonth: YearMonth, options: { autoFetch?: boolean } = {}) {
+  const { autoFetch = true } = options;
+  const { getMonthlySnapshot } = useData();
+  const [data, setData] = useState<MonthlySnapshotsResponse | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<any>(null);
+
+  useEffect(() => {
+    if (!autoFetch || !yearMonth) return;
+    const controller = new AbortController();
+    (async () => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const res = await getMonthlySnapshot(yearMonth, { signal: controller.signal });
+        setData(res);
+      } catch (err) {
+        if (!isTimeoutError(err)) console.error('useMonthlySnapshot error:', err);
+        setError(err);
+      } finally {
+        setIsLoading(false);
+      }
+    })();
+    return () => controller.abort();
+  }, [yearMonth, autoFetch, getMonthlySnapshot]);
+
+  const refresh = useCallback(async () => {
+    if (!yearMonth) return null as any;
+    const controller = new AbortController();
+    try {
+      setIsLoading(true);
+      const res = await getMonthlySnapshot(yearMonth, { signal: controller.signal });
+      setData(res);
+      return res;
+    } finally {
+      controller.abort();
+      setIsLoading(false);
+    }
+  }, [yearMonth, getMonthlySnapshot]);
+
+  return { data, isLoading, error, refresh };
 }

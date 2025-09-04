@@ -1,4 +1,5 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import { withTimeout, AI_INSIGHTS_TIMEOUT_MS, isTimeoutError, TimeoutError } from '@/lib/http/timeout';
 
 export interface ProjectData {
   manpower?: Record<string, any>[];
@@ -31,12 +32,15 @@ export class GeminiService {
   async generateInsights(projectData: ProjectData): Promise<AIInsights> {
     try {
       const prompt = this.buildAnalysisPrompt(projectData);
-      const result = await this.model.generateContent(prompt);
+      const result = await withTimeout(this.model.generateContent(prompt), AI_INSIGHTS_TIMEOUT_MS, 'generateContent') as any;
       const response = await result.response;
       const text = response.text();
 
       return this.parseAIResponse(text);
     } catch (error) {
+      if (isTimeoutError(error)) {
+        throw new TimeoutError('AI insights generation timed out', AI_INSIGHTS_TIMEOUT_MS, 'generateContent', error);
+      }
       console.error('Error generating AI insights:', error);
       throw new Error('Failed to generate AI insights');
     }

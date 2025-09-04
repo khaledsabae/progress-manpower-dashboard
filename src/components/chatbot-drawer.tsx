@@ -15,8 +15,53 @@ import {
 } from "@/components/ui/drawer";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Bot, User, SendHorizonal, Loader2, AlertTriangle, Trash2 } from 'lucide-react';
+import { Badge } from "@/components/ui/badge";
+import { Bot, User, SendHorizonal, Loader2, AlertTriangle, Trash2, Zap, TrendingUp, Shield, HelpCircle } from 'lucide-react';
 import { cn } from "@/lib/utils";
+
+// --- Forecast Chart Integration ---
+import ForecastChart from "@/components/ForecastChart";
+
+// --- Enhanced Command System ---
+interface CommandSuggestion {
+    command: string;
+    description: string;
+    icon: React.ReactNode;
+    category: 'forecast' | 'risks' | 'system' | 'help';
+}
+
+const COMMAND_SUGGESTIONS: CommandSuggestion[] = [
+    {
+        command: '/forecast method=sma window=7 horizon=4 discipline=hvac',
+        description: 'توقع القوى العاملة في نظام التكييف',
+        icon: <TrendingUp className="h-4 w-4" />,
+        category: 'forecast'
+    },
+    {
+        command: '/forecast method=ema window=7 horizon=4 discipline=firefighting',
+        description: 'توقع القوى العاملة في نظام مكافحة الحريق',
+        icon: <Shield className="h-4 w-4" />,
+        category: 'forecast'
+    },
+    {
+        command: '/detectrisks',
+        description: 'تحليل المخاطر والمشاكل المحتملة',
+        icon: <AlertTriangle className="h-4 w-4" />,
+        category: 'risks'
+    },
+    {
+        command: '/help',
+        description: 'عرض جميع الأوامر المتاحة',
+        icon: <HelpCircle className="h-4 w-4" />,
+        category: 'help'
+    },
+    {
+        command: '/status',
+        description: 'حالة النظام والخدمات',
+        icon: <Zap className="h-4 w-4" />,
+        category: 'system'
+    }
+];
 
 // Define the structure for a message
 interface Message {
@@ -48,6 +93,11 @@ export function ChatbotDrawer() {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+    const [showSuggestions, setShowSuggestions] = useState(false);
+    const [filteredSuggestions, setFilteredSuggestions] = useState<CommandSuggestion[]>([]);
+
+    // Forecast data state
+    const [forecastData, setForecastData] = useState<any>(null);
 
     const scrollAreaRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
@@ -73,9 +123,95 @@ export function ChatbotDrawer() {
         }
     }, [isDrawerOpen]);
 
-    // Handle input change
+    // Hide suggestions when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (inputRef.current && !inputRef.current.contains(event.target as Node)) {
+                setShowSuggestions(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
+    // Simple Markdown renderer for command responses
+    const renderMarkdown = (text: string): React.ReactNode => {
+        if (!text.includes('**') && !text.includes('*') && !text.includes('```')) {
+            return text;
+        }
+
+        // Split by code blocks first
+        const parts = text.split(/(```[\s\S]*?```)/g);
+
+        return parts.map((part, index) => {
+            if (part.startsWith('```') && part.endsWith('```')) {
+                // Code block
+                const code = part.slice(3, -3).trim();
+                return (
+                    <pre key={index} className="bg-gray-100 dark:bg-gray-800 p-2 rounded text-sm overflow-x-auto my-2">
+                        <code>{code}</code>
+                    </pre>
+                );
+            } else {
+                // Regular text with bold/italic
+                const boldItalicRegex = /(\*\*\*|___)(.*?)\1|(\*\*|__)(.*?)\2|(\*|_)(.*?)\5/g;
+                const elements: React.ReactNode[] = [];
+                let lastIndex = 0;
+                let match;
+
+                while ((match = boldItalicRegex.exec(part)) !== null) {
+                    // Add text before match
+                    if (match.index > lastIndex) {
+                        elements.push(part.slice(lastIndex, match.index));
+                    }
+
+                    const marker = match[1] || match[3] || match[5];
+                    const content = match[2] || match[4] || match[6];
+
+                    if (marker === '***' || marker === '___') {
+                        elements.push(<strong key={match.index}><em>{content}</em></strong>);
+                    } else if (marker === '**' || marker === '__') {
+                        elements.push(<strong key={match.index}>{content}</strong>);
+                    } else {
+                        elements.push(<em key={match.index}>{content}</em>);
+                    }
+
+                    lastIndex = match.index + match[0].length;
+                }
+
+                // Add remaining text
+                if (lastIndex < part.length) {
+                    elements.push(part.slice(lastIndex));
+                }
+
+                return <span key={index}>{elements}</span>;
+            }
+        });
+    };
+
+    // Enhanced input change handler with auto-suggestions
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setInput(event.target.value);
+        const value = event.target.value;
+        setInput(value);
+
+        // Show suggestions when input starts with '/'
+        if (value.startsWith('/')) {
+            const filtered = COMMAND_SUGGESTIONS.filter(suggestion =>
+                suggestion.command.toLowerCase().includes(value.toLowerCase()) ||
+                suggestion.description.includes(value.slice(1))
+            );
+            setFilteredSuggestions(filtered);
+            setShowSuggestions(filtered.length > 0);
+        } else {
+            setShowSuggestions(false);
+        }
+    };
+
+    // Handle suggestion selection
+    const handleSuggestionClick = (suggestion: CommandSuggestion) => {
+        setInput(suggestion.command);
+        setShowSuggestions(false);
+        inputRef.current?.focus();
     };
 
     // Handle sending message (with sanitization)
@@ -128,6 +264,11 @@ export function ChatbotDrawer() {
                 throw new Error(responseData.error || `حدث خطأ في الشبكة: ${response.status}`);
             }
 
+            // Handle forecast data
+            if (responseData.type === 'forecastResult') {
+                setForecastData({ ...responseData.data, discipline: responseData.discipline });
+            }
+
             const newBotMessage: Message = { sender: 'bot', text: responseData.reply || "لم أتمكن من فهم الرد." };
             setMessages(prevMessages => [...prevMessages, newBotMessage]);
 
@@ -156,6 +297,7 @@ export function ChatbotDrawer() {
     const handleClearChat = () => {
         setMessages([initialBotMessage]);
         setError(null);
+        setForecastData(null); // Clear forecast data
         inputRef.current?.focus();
     };
 
@@ -204,7 +346,7 @@ export function ChatbotDrawer() {
                                             : "bg-muted"
                                     )}
                                 >
-                                    {message.text}
+                                    {message.sender === 'bot' ? renderMarkdown(message.text) : message.text}
                                 </div>
                                 {message.sender === 'user' && (
                                     // تعديل بسيط: استخدام ألوان shadcn الافتراضية أكتر
@@ -227,6 +369,13 @@ export function ChatbotDrawer() {
                     </div>
                 </ScrollArea>
 
+                {/* Forecast Chart */}
+                {forecastData && (
+                    <div className="p-4 border-t">
+                        <ForecastChart data={forecastData} discipline={forecastData.discipline} locale="ar" />
+                    </div>
+                )}
+
                 {error && (
                     <div className="p-3 text-destructive flex items-center gap-2 text-sm border-t bg-destructive/10 flex-shrink-0">
                         <AlertTriangle className="h-4 w-4 flex-shrink-0" />
@@ -235,20 +384,95 @@ export function ChatbotDrawer() {
                 )}
 
                 <DrawerFooter className="pt-4 flex-shrink-0">
-                    <div className="flex gap-2">
-                        <Input
-                            ref={inputRef}
-                            placeholder="اكتب سؤالك هنا..."
-                            value={input}
-                            onChange={handleInputChange}
-                            onKeyPress={handleKeyPress}
-                            disabled={isLoading}
-                            className="flex-grow"
-                        />
-                        <Button onClick={handleSendMessage} disabled={isLoading || !input.trim()} size="icon">
-                            {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <SendHorizonal className="h-4 w-4" />}
-                            <span className="sr-only">إرسال</span>
-                        </Button>
+                    {/* Quick Command Buttons */}
+                    <div className="mb-3 flex flex-wrap gap-2">
+                        {COMMAND_SUGGESTIONS.slice(0, 4).map((suggestion, index) => (
+                            <Button
+                                key={index}
+                                variant="outline"
+                                size="sm"
+                                onClick={() => handleSuggestionClick(suggestion)}
+                                disabled={isLoading}
+                                className="text-xs h-8"
+                            >
+                                {suggestion.icon}
+                                <span className="ml-1 hidden sm:inline">
+                                    {suggestion.command.split(' ')[0]}
+                                </span>
+                            </Button>
+                        ))}
+                    </div>
+
+                    {/* Input Area with Suggestions */}
+                    <div className="relative">
+                        <div className="flex gap-2">
+                            <div className="relative flex-grow">
+                                <Input
+                                    ref={inputRef}
+                                    placeholder="اكتب سؤالك أو أمر (مثل /help)..."
+                                    value={input}
+                                    onChange={handleInputChange}
+                                    onKeyPress={handleKeyPress}
+                                    disabled={isLoading}
+                                    className="pr-10"
+                                />
+
+                                {/* Command indicator */}
+                                {input.startsWith('/') && (
+                                    <Badge
+                                        variant="secondary"
+                                        className="absolute right-2 top-1/2 transform -translate-y-1/2 text-xs"
+                                    >
+                                        Command
+                                    </Badge>
+                                )}
+                            </div>
+
+                            <Button
+                                onClick={handleSendMessage}
+                                disabled={isLoading || !input.trim()}
+                                size="icon"
+                            >
+                                {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <SendHorizonal className="h-4 w-4" />}
+                                <span className="sr-only">إرسال</span>
+                            </Button>
+                        </div>
+
+                        {/* Suggestions Dropdown */}
+                        {showSuggestions && filteredSuggestions.length > 0 && (
+                            <div className="absolute bottom-full mb-2 w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-50 max-h-60 overflow-y-auto">
+                                <div className="p-2">
+                                    <div className="text-xs text-gray-500 mb-2 px-2">
+                                        اقتراحات الأوامر:
+                                    </div>
+                                    {filteredSuggestions.map((suggestion, index) => (
+                                        <button
+                                            key={index}
+                                            onClick={() => handleSuggestionClick(suggestion)}
+                                            className="w-full text-left p-2 hover:bg-gray-50 dark:hover:bg-gray-700 rounded flex items-start gap-3 transition-colors"
+                                        >
+                                            <div className="text-blue-600 dark:text-blue-400 mt-0.5">
+                                                {suggestion.icon}
+                                            </div>
+                                            <div className="flex-grow min-w-0">
+                                                <div className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">
+                                                    {suggestion.command}
+                                                </div>
+                                                <div className="text-xs text-gray-500 dark:text-gray-400">
+                                                    {suggestion.description}
+                                                </div>
+                                            </div>
+                                            <Badge
+                                                variant="outline"
+                                                className="text-xs ml-2 shrink-0"
+                                            >
+                                                {suggestion.category}
+                                            </Badge>
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </DrawerFooter>
             </DrawerContent>

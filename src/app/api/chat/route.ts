@@ -126,6 +126,7 @@ async function recognizeIntent(input: string): Promise<{ intent: string; keyword
 // دالة رئيسية لمعالجة طلبات POST
 export async function POST(req: NextRequest) {
     console.log('\n--- [API /api/chat] New Chat Request ---');
+    const startTime = Date.now();
     try {
         const { message, history } = await req.json();
         console.log('[DEBUG] Received User Query:', message);
@@ -144,9 +145,14 @@ export async function POST(req: NextRequest) {
                     command: parsed.command,
                     args: parsed.args,
                     locale,
+                    history: history
                 });
                 const replyText = formatResultForChat(exec, locale);
-                return NextResponse.json({ reply: replyText });
+                if (exec.data && parsed.command === 'forecast') {
+                    return NextResponse.json({ reply: replyText, data: exec.data.data, type: exec.data.type, discipline: exec.data.discipline });
+                } else {
+                    return NextResponse.json({ reply: replyText });
+                }
             } catch (e: any) {
                 console.error('[API /api/chat] Grandeur command error:', e);
                 const errMsg = /[\u0600-\u06FF]/.test(message)
@@ -251,7 +257,8 @@ export async function POST(req: NextRequest) {
             console.warn("[WARN] Generated empty reply, sending fallback.");
         }
         console.log('[DEBUG] Sending Final Reply:', reply);
-        return NextResponse.json({ reply });
+        const responseTime = Date.now() - startTime;
+        return NextResponse.json({ reply }, { headers: { 'x-duration-ms': responseTime.toString() } });
 
     } catch (error) {
         console.error('[API /api/chat] UNHANDLED Error in POST handler:', error);

@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { GeminiService } from '@/lib/gemini';
+import { withTimeout, AI_INSIGHTS_TIMEOUT_MS, isTimeoutError } from '@/lib/http/timeout';
+
+export const maxDuration = 30;
 
 interface ProjectData {
   manpower?: Record<string, any>[];
@@ -37,7 +40,7 @@ export async function POST(request: NextRequest) {
     });
 
     const geminiService = new GeminiService();
-    const insights = await geminiService.generateInsights(projectData);
+    const insights = await withTimeout(geminiService.generateInsights(projectData), AI_INSIGHTS_TIMEOUT_MS, 'ai-insights route');
     
     const responseTime = Date.now() - startTime;
     
@@ -49,13 +52,29 @@ export async function POST(request: NextRequest) {
         responseTimeMs: responseTime,
         model: process.env.GEMINI_MODEL_NAME || 'gemini-1.5-flash',
       }
-    });
+    }, { headers: { 'x-duration-ms': responseTime.toString() } });
     
   } catch (error: unknown) {
     const errorId = Math.random().toString(36).substring(2, 8);
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     
     console.error(`[${errorId}] Error in ai-insights API:`, error);
+    
+    if (isTimeoutError(error)) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Request timed out',
+          message: 'The AI insights generation timed out. Please try again.',
+          timestamp: new Date().toISOString(),
+          retryAfter: '30'
+        },
+        {
+          status: 504,
+          headers: { 'Retry-After': '30' }
+        }
+      );
+    }
     
     // Handle rate limiting or service unavailable errors
     if (errorMessage.includes('429') || errorMessage.includes('503')) {

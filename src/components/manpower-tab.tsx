@@ -1,10 +1,14 @@
 "use client";
 
 // --- ADDED: Ensure React and Dispatch/SetStateAction are imported ---
-import React, { useMemo, Dispatch, SetStateAction } from 'react';
+import React, { useMemo, useCallback, Dispatch, SetStateAction, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
+import { ChevronUp, ChevronDown, ChevronsUpDown } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 // Make sure type path is correct, or import from @/types
 import type { ManpowerSheetRow } from '@/services/google-sheets'; // OR from '@/types' if defined there
 import { Icons } from "@/components/icons";
@@ -16,6 +20,9 @@ import type { ManpowerSortState, ManpowerSortColumn } from '@/types';
 
 // Import the new ChartJS component
 import { ManpowerChartJS } from '@/components/ManpowerChartJS'; // <-- Ensure path is correct
+// Import forecast components and service
+import ForecastChart from '@/components/ForecastChart';
+import { forecastManpower, ForecastParams } from '@/services/forecasting';
 
 // --- Types ---
 interface ManpowerSummary {
@@ -161,7 +168,7 @@ export function ManpowerTab({
                                     data.map((row, index) => {
                                         const displayTotal = row.totalManpower ?? ((row.hvacManpower ?? 0) + (row.firefightingManpower ?? 0) + (row.fireAlarmManpower ?? 0));
                                         return (
-                                            <TableRow key={row.timestamp ?? index}>
+                                            <TableRow key={`${row.timestamp}-${index}`}>
                                                 <TableCell className="px-2 py-1.5 whitespace-nowrap">{formatDateDisplay(row.timestamp)}</TableCell>
                                                 <TableCell className="px-2 py-1.5 text-center">{row.hvacManpower ?? '-'}</TableCell>
                                                 <TableCell className="px-2 py-1.5 text-center">{row.firefightingManpower ?? '-'}</TableCell>

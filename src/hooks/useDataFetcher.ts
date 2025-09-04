@@ -127,6 +127,7 @@ export function useDataFetcher<T extends DataType>({
   const lastFetchTime = useRef<number>(0);
   const isRefreshingRef = useRef(false);
   const hasFetchedRef = useRef(false);
+  const abortControllerRef = useRef<AbortController | null>(null);
   
   // Track if this is the initial mount
   const isInitialLoading = state.status === 'idle' || 
@@ -145,7 +146,8 @@ export function useDataFetcher<T extends DataType>({
     isRefreshingRef.current = true;
     
     try {
-      const response = await getData(type, true);
+      abortControllerRef.current = new AbortController();
+      const response = await getData(type, true, abortControllerRef.current.signal);
       const data = response as ExtractData<T> | null;
       
       if (!isMounted.current) return null;
@@ -197,6 +199,7 @@ export function useDataFetcher<T extends DataType>({
   useEffect(() => {
     return () => {
       isMounted.current = false;
+      abortControllerRef.current?.abort();
     };
   }, []);
   

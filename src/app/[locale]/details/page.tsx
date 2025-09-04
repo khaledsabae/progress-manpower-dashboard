@@ -1,5 +1,5 @@
 import { getTranslations } from 'next-intl/server';
-import { Card } from '@/components/ui/Card';
+import { Card } from '@/components/ui/card';
 
 async function fetchProjectData() {
   try {

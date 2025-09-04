@@ -2,7 +2,7 @@
 
 import { useMemo } from 'react';
 import { useTranslations } from 'next-intl';
-import { Card } from '@/components/ui/Card';
+import { Card } from '@/components/ui/card';
 import { Brain, Calendar, RefreshCw } from 'lucide-react';
 import { useAIInsights } from '@/hooks/useDataFetcher';
 import { LoadingSkeleton } from '@/components/ui/LoadingSkeleton';

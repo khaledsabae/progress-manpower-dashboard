@@ -1,5 +1,6 @@
 // src/services/google-sheets.ts
 import { parse } from 'date-fns';
+import { fetchWithTimeout, isAbortError, isTimeoutError, CSV_FETCH_TIMEOUT_MS } from '@/lib/http/timeout';
 
 // --- Type Definitions ---
 
@@ -249,7 +250,7 @@ export async function getProgressSheetData(sheetName: string): Promise<ProgressS
     const cacheBuster = `&_cb=${new Date().getTime()}`;
     const csvUrl = `${BASE_URL}${encodeURIComponent(sheetName)}${cacheBuster}`;
     try {
-        const response = await fetch(csvUrl, { cache: 'no-store' });
+        const response = await fetchWithTimeout(csvUrl, { cache: 'no-store' }, CSV_FETCH_TIMEOUT_MS);
         const csvText = await response.text();
         if (!response.ok) { throw new Error(`HTTP error! Status: ${response.status}. URL: ${csvUrl}`); }
         if (!csvText || csvText.trim() === '' || csvText.toLowerCase().includes('<html')) { throw new Error(`Empty or invalid CSV response from URL: ${csvUrl}`); }
@@ -293,6 +294,9 @@ export async function getProgressSheetData(sheetName: string): Promise<ProgressS
         }).filter((r): r is ProgressSheetRow => r !== null);
         return pData;
     } catch (error) {
+        if (isTimeoutError(error) || isAbortError(error)) {
+            throw new Error(`Request timed out or aborted for sheet "${sheetName}": ${error instanceof Error ? error.message : String(error)}`);
+        }
         console.error(`[getProgressSheetData] Error fetching/processing sheet "${sheetName}":`, error);
         throw new Error(`Failed to process Progress data from sheet "${sheetName}": ${error instanceof Error ? error.message : String(error)}`);
     }
@@ -303,7 +307,7 @@ export async function getManpowerSheetData(sheetName: string): Promise<ManpowerS
     const cacheBuster = `&_cb=${new Date().getTime()}`;
     const csvUrl = `${BASE_URL}${encodeURIComponent(sheetName)}${cacheBuster}`;
     try {
-        const response = await fetch(csvUrl, { cache: 'no-store' });
+        const response = await fetchWithTimeout(csvUrl, { cache: 'no-store' }, CSV_FETCH_TIMEOUT_MS);
         const csvText = await response.text();
         if (!response.ok) { throw new Error(`HTTP error! Status: ${response.status}. URL: ${csvUrl}`); }
         if (!csvText || csvText.trim() === '' || csvText.toLowerCase().includes('<html')) { throw new Error(`Empty or invalid CSV response from URL: ${csvUrl}`); }
@@ -358,7 +362,7 @@ export async function getMaterialStatusData(sheetName: string): Promise<Material
     const cacheBuster = `&_cb=${new Date().getTime()}`;
     const csvUrl = `${BASE_URL}${encodeURIComponent(sheetName)}${cacheBuster}`;
     try {
-        const response = await fetch(csvUrl, { cache: 'no-store' });
+        const response = await fetchWithTimeout(csvUrl, { cache: 'no-store' }, CSV_FETCH_TIMEOUT_MS);
         const csvText = await response.text();
         // console.log("RAW CSV DATA --- Material Status --- STARTS BELOW:");
         // console.log(csvText.substring(0, 2000));
@@ -424,7 +428,7 @@ export async function getHistoricalProgressData(sheetName: string): Promise<Hist
     const cacheBuster = `&_cb=${new Date().getTime()}`;
     const csvUrl = `${BASE_URL}${encodeURIComponent(sheetName)}${cacheBuster}`;
     try {
-        const response = await fetch(csvUrl, { cache: 'no-store' });
+        const response = await fetchWithTimeout(csvUrl, { cache: 'no-store' }, CSV_FETCH_TIMEOUT_MS);
         const csvText = await response.text();
         if (!response.ok) { throw new Error(`HTTP error! Status: ${response.status}. URL: ${csvUrl}`); }
         if (!csvText || csvText.trim() === '' || csvText.toLowerCase().includes('<html')) { throw new Error(`Empty or invalid CSV response from URL: ${csvUrl}`); }
@@ -434,7 +438,7 @@ export async function getHistoricalProgressData(sheetName: string): Promise<Hist
         const { headers, data: rows } = parsedResult;
         const headerMap: { [key: string]: number } = {}; headers.forEach((h, i) => { headerMap[h] = i; });
 
-        const dateIdx = getHeaderIndex(headerMap, ['snapshotdate', 'snapshot date'], sheetName, true);
+        const dateIdx = getHeaderIndex(headerMap, ['snapshotdate', 'snapshot date', 'date'], sheetName, true);
         const dataSourceIdx = getHeaderIndex(headerMap, ['datasource', 'data source'], sheetName, false);
         const pIdx = getHeaderIndex(headerMap, ['projects'], sheetName);
         const bIdx = getHeaderIndex(headerMap, ['building name', 'building'], sheetName);
@@ -469,7 +473,18 @@ export async function getHistoricalProgressData(sheetName: string): Promise<Hist
         const pData: HistoricalProgressRow[] = rows.map((v) => {
             const allIndices = [dateIdx, dataSourceIdx, pIdx, bIdx, fIdx, ffPIdx, faPIdx, frIdx, hPIdx, hrIdx, areaBuildingIdx, locationRoomLevelIdx, activityIdx, durationIdx, progressIdx, predecessorIdx, predFinishDateIdx, calcStartDateIdx, calcFinishDateIdx, remarksJustificationIdx, hMIdx, ffMIdx, faMIdx, tMIdx];
             const maxIdxNeeded = Math.max(...allIndices.filter(idx => idx !== -1 && idx !== undefined));
-            if (maxIdxNeeded > -1 && v.length <= maxIdxNeeded && !v.slice(0, maxIdxNeeded + 1).some(cell => cell && cell.trim() !== '')) { return null; }
+            
+            // Skip empty rows more reliably
+            if (v.every(cell => !cell || cell.trim() === '')) {
+                return null;
+            }
+            // Also check if critical fields are missing or if row is shorter than expected for critical fields
+            if ( (dateIdx !== -1 && (!v[dateIdx] || v[dateIdx].trim() === '')) || 
+                 (maxIdxNeeded > -1 && v.length <= maxIdxNeeded && !v.slice(0, maxIdxNeeded + 1).some(cell => cell && cell.trim() !== ''))
+               ) {
+                // console.warn(`[getHistoricalProgressData] Skipping row due to missing critical data or insufficient columns.`);
+                return null;
+            }
 
 
             const dateStr = dateIdx !== -1 ? v[dateIdx] : null;
@@ -537,17 +552,27 @@ export async function getMechanicalPlanData(sheetName: string): Promise<Mechanic
     const cacheBuster = `&_cb=${new Date().getTime()}`;
     const csvUrl = `${BASE_URL}${encodeURIComponent(sheetName)}${cacheBuster}`;
     try {
-        const response = await fetch(csvUrl, { cache: 'no-store' });
+        const response = await fetchWithTimeout(csvUrl, { cache: 'no-store' }, CSV_FETCH_TIMEOUT_MS);
         const csvText = await response.text();
         // console.log("[getMechanicalPlanData DEBUG] For sheet:", sheetName, "URL was:", csvUrl, "RAW CSV TEXT (first 500 chars):", csvText.substring(0, 500));
         if (!response.ok) { throw new Error(`HTTP error! Status: ${response.status}. URL: ${csvUrl}`); }
         if (!csvText || csvText.trim() === '' || csvText.toLowerCase().includes('<html') || csvText.toLowerCase().includes('error')) { throw new Error(`Google Sheets returned empty or error response for URL: ${csvUrl}. Response: ${csvText.substring(0,300)}`); }
 
-        let parsedResult; try { parsedResult = parseCSV(csvText); } catch (parseError: any) { throw new Error(`Failed to parse CSV data from sheet "${sheetName}": ${parseError.message}`); }
-        if (!parsedResult?.headers || !parsedResult.data) { throw new Error(`Invalid data structure after parsing CSV from sheet "${sheetName}".`); }
+        let parsedResult;
+        try {
+            parsedResult = parseCSV(csvText);
+        } catch (parseError: any) {
+            console.error(`[getMechanicalPlanData] Failed to parse CSV data from sheet "${sheetName}":`, parseError);
+            throw new Error(`Failed to parse CSV data from sheet "${sheetName}": ${parseError.message}`);
+        }
+
+        if (!parsedResult?.headers || !parsedResult.data) {
+            throw new Error(`Invalid data structure after parsing CSV from sheet "${sheetName}".`);
+        }
 
         const { headers, data: rows } = parsedResult;
-        const headerMap: { [key: string]: number } = {}; headers.forEach((h, i) => { headerMap[h] = i; });
+        const headerMap: { [key: string]: number } = {};
+        headers.forEach((h, i) => { headerMap[h] = i; }); // h is already toLowerCase().trim() from parseCSV
 
         const areaBuildingIdx = getHeaderIndex(headerMap, ['area/building', 'areabuilding'], sheetName, true);
         const locationIdx = getHeaderIndex(headerMap, ['location (room/level)', 'location', 'room/level'], sheetName);
@@ -573,8 +598,19 @@ export async function getMechanicalPlanData(sheetName: string): Promise<Mechanic
         const processedData: MechanicalPlanRow[] = rows.map((values) => {
             const indices = [areaBuildingIdx, locationIdx, activityIdx, durationIdx, progressIdx, predecessorIdx, predFinishDateIdx, calcStartDateIdx, calcFinishDateIdx, remarksIdx];
             const maxIdxNeeded = Math.max(...indices.filter(idx => idx !== -1 && idx !== undefined));
-             if (maxIdxNeeded > -1 && values.length <= maxIdxNeeded && !values.slice(0, maxIdxNeeded + 1).some(cell => cell && cell.trim() !== '')) { return null; }
-
+            
+            // Skip empty rows more reliably
+            if (values.every(cell => !cell || cell.trim() === '')) {
+                return null;
+            }
+            // Also check if critical fields are missing or if row is shorter than expected for critical fields
+            if ( (areaBuildingIdx !== -1 && (!values[areaBuildingIdx] || values[areaBuildingIdx].trim() === '')) || 
+                 (activityIdx !== -1 && (!values[activityIdx] || values[activityIdx].trim() === '')) ||
+                 (maxIdxNeeded > -1 && values.length <= maxIdxNeeded && !values.slice(0, maxIdxNeeded + 1).some(cell => cell && cell.trim() !== ''))
+               ) {
+                // console.warn(`[getMechanicalPlanData] Skipping row due to missing critical data or insufficient columns.`);
+                return null;
+            }
 
             const predFinishStr = predFinishDateIdx !== -1 ? values[predFinishDateIdx] : null;
             const calcStartStr = calcStartDateIdx !== -1 ? values[calcStartDateIdx] : null;
@@ -619,7 +655,7 @@ export async function getRiskRegisterData(sheetName: string = SHEET_NAMES.RISK_R
     const csvUrl = `${BASE_URL}${encodeURIComponent(sheetName)}${cacheBuster}`;
 
     try {
-        const response = await fetch(csvUrl, { cache: 'no-store' });
+        const response = await fetchWithTimeout(csvUrl, { cache: 'no-store' }, CSV_FETCH_TIMEOUT_MS);
         const csvText = await response.text();
         // console.log(`[getRiskRegisterData] RAW CSV for ${sheetName} (first 500 chars):`, csvText.substring(0, 500));
 
